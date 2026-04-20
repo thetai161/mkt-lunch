@@ -73,7 +73,7 @@
         "2026-04-29": {
           "main": 9,
           "soup": 3,
-          "fruit": 2,
+          "fruit": null,
           "rice": 2
         }
       },
