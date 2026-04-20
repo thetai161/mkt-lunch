@@ -128,7 +128,7 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": null
+      "rolloverOverride": 1500000
     }
   },
   "startWeekKey": "2026-04-27"
