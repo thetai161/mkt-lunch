@@ -42,6 +42,25 @@
       "name": "Cương"
     }
   ],
-  "weeks": {},
+  "weeks": {
+    "2026-04-27": {
+      "days": {},
+      "assignments": {},
+      "qrImage": null,
+      "contributors": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        10,
+        8,
+        6,
+        4,
+        2
+      ],
+      "rolloverOverride": null
+    }
+  },
   "startWeekKey": "2026-04-27"
 }
