@@ -317,6 +317,9 @@
   table.task-table th:first-child, table.task-table td:first-child {
     text-align: left;
   }
+  table.task-table { table-layout: fixed; }
+  table.task-table th:first-child, table.task-table td:first-child { width: 18%; }
+  table.task-table th:not(:first-child), table.task-table td:not(:first-child) { width: 16.4%; }
   table.summary th .th-sub {
     display: block;
     font-size: 11px;
@@ -611,6 +614,7 @@
     cursor: pointer;
     font-family: inherit;
     transition: all .15s;
+    white-space: nowrap;
   }
   .task-claim-btn:hover { background: var(--primary); color: #fff; }
   .task-claim-btn:disabled { opacity: .5; cursor: wait; }
@@ -620,6 +624,7 @@
     padding: 6px 10px;
     background: #f3f4f6;
     border-radius: 8px;
+    white-space: nowrap;
   }
   .task-mine {
     font-size: 13px;
@@ -628,6 +633,7 @@
     padding: 6px 10px;
     background: var(--primary-soft);
     border-radius: 8px;
+    white-space: nowrap;
   }
   .task-release-btn {
     background: transparent;
