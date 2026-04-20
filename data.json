@@ -91,6 +91,20 @@
         2
       ],
       "rolloverOverride": null
+    },
+    "2026-04-20": {
+      "days": {},
+      "assignments": {
+        "2026-04-22": {
+          "main": 9,
+          "soup": null,
+          "fruit": null,
+          "rice": null
+        }
+      },
+      "qrImage": null,
+      "contributors": [],
+      "rolloverOverride": null
     }
   },
   "startWeekKey": "2026-04-27"
