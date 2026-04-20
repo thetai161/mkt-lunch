@@ -48,7 +48,7 @@
       "assignments": {
         "2026-04-27": {
           "main": 6,
-          "soup": 4,
+          "soup": null,
           "fruit": 1,
           "rice": null
         },
