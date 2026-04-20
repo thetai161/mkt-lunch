@@ -45,7 +45,14 @@
   "weeks": {
     "2026-04-27": {
       "days": {},
-      "assignments": {},
+      "assignments": {
+        "2026-04-27": {
+          "main": 1,
+          "soup": null,
+          "fruit": null,
+          "rice": null
+        }
+      },
       "qrImage": null,
       "contributors": [
         1,
