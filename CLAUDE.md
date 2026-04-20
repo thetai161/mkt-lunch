@@ -12,7 +12,7 @@ Deploys as a Vercel static site + serverless functions. No `package.json`, no bu
 
 - **Local preview (UI only):** open `index.html` in a browser. The `/api/data` call will 404; the app falls back to 10 default members and an empty week set, which is enough to exercise the UI.
 - **Full local run with persistence:** copy `.env.local.example` → `.env.local` and fill in `GITHUB_TOKEN`, then `vercel dev` from the project root. This serves `api/data.js` at `/api/data` with GitHub-backed persistence.
-- **Production:** pushed to `main` on `github.com/kieuchinh3007-star/htx-mkt-xipat` and auto-deployed by Vercel. `GITHUB_TOKEN` must be set in the Vercel project's environment variables (Settings → Environment Variables) for all environments that need persistence.
+- **Production:** pushed to `main` on `github.com/thetai161/mkt-lunch` and auto-deployed by Vercel. `GITHUB_TOKEN` must be set in the Vercel project's environment variables (Settings → Environment Variables) for all environments that need persistence.
 - There are no tests and no lint config.
 
 ## Architecture
@@ -23,7 +23,7 @@ The app has **two separate persistence layers that must not be conflated**:
 
 1. **Shared data** (members, weeks, startWeekKey) lives in a file `data.json` on the dedicated `data` branch of this same repo. The app's `main` branch is code-only and never touched by the API, which is why saves don't re-trigger Vercel builds.
    - Auth: `GITHUB_TOKEN` env var (Fine-grained PAT with `Contents: Read and write` on this repo). Never hardcode. Owner/repo/branch/path/committer can be overridden via `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`, `GITHUB_DATA_PATH`, `GIT_COMMITTER_NAME`, `GIT_COMMITTER_EMAIL`.
-   - Committer is fixed (`Team Lunch Bot <bot@htx-mkt-xipat.local>` default); commit **messages** are dynamic.
+   - Committer is fixed (`Team Lunch Bot <bot@mkt-lunch.local>` default); commit **messages** are dynamic.
    - `Cache-Control: no-store` on both endpoints so Vercel's edge cache can't serve stale reads.
 
    Two write paths exist and they own different fields of the JSON — **don't confuse them**:
