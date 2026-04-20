@@ -49,7 +49,7 @@
         "2026-04-27": {
           "main": null,
           "soup": null,
-          "fruit": null,
+          "fruit": 1,
           "rice": 7
         },
         "2026-04-30": {
