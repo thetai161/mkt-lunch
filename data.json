@@ -57,6 +57,12 @@
           "soup": null,
           "fruit": null,
           "rice": null
+        },
+        "2026-04-28": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": 1
         }
       },
       "qrImage": null,
