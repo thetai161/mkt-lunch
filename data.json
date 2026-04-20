@@ -127,8 +127,19 @@
         }
       },
       "qrImage": null,
-      "contributors": [],
-      "rolloverOverride": 1500000
+      "contributors": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "rolloverOverride": 0
     }
   },
   "startWeekKey": "2026-04-27"
