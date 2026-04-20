@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tính tiền ăn trưa team</title>
+<style>
+  :root {
+    --primary: #ea580c;
+    --primary-light: #fff7ed;
+    --primary-hover: #c2410c;
+    --primary-soft: #fff1e7;
+    --bg: #fdf6ed;
+    --card: #ffffff;
+    --border: #f5e6d3;
+    --border-strong: #ebd5bb;
+    --text: #1f2937;
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
+    --success: #16a34a;
+    --success-bg: #f0fdf4;
+    --danger: #dc2626;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* App header */
+  .app-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 4px 14px rgba(234,88,12,0.08);
+    margin-bottom: 16px;
+  }
+  .app-header-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #fb923c, #ea580c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(234,88,12,0.25);
+    flex-shrink: 0;
+  }
+  .app-header-text { min-width: 0; flex: 1; }
+  .app-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.2px;
+  }
+  .app-subtitle {
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* Week navigator */
+  .week-nav {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 14px 20px;
+    box-shadow: 0 2px 8px rgba(234,88,12,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border);
+  }
+  .nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 26px;
+    cursor: pointer;
+    padding: 2px 10px;
+    border-radius: 8px;
+    line-height: 1;
+  }
+  .nav-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+  .week-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 10px;
+    transition: background .15s;
+    user-select: none;
+  }
+  .week-range:hover { background: var(--primary-light); }
+  .week-range .hidden-date {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    background: transparent;
+    cursor: pointer;
+    z-index: 2;
+    color-scheme: light;
+  }
+  .week-range > *:not(.hidden-date) { pointer-events: none; }
+  .week-range .chevron {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 2px;
+  }
+  .badge-today {
+    background: var(--primary-soft);
+    color: var(--primary);
+    padding: 3px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .calendar-icon { font-size: 18px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: #fbeadb;
+    border-radius: 14px;
+    padding: 5px;
+    margin-bottom: 20px;
+    gap: 2px;
+  }
+  .tab {
+    flex: 1;
+    padding: 11px 10px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all .15s;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: var(--card);
+    color: var(--text);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-weight: 600;
+  }
+
+  /* Day chips */
+  .day-chips {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .day-chip {
+    padding: 12px 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all .15s;
+  }
+  .day-chip:hover { border-color: var(--border-strong); }
+  .day-chip .day-name { font-weight: 600; font-size: 14px; }
+  .day-chip .day-date { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+  .day-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(234,88,12,0.25);
+  }
+  .day-chip.active .day-name,
+  .day-chip.active .day-date { color: #fff; }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(234,88,12,0.06);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .card.flush { padding: 0; overflow: hidden; }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+  .card-title { font-size: 18px; font-weight: 700; }
+  .card-title .muted { color: var(--text-muted); font-weight: 500; margin-left: 6px; font-size: 15px; }
+  .total-label { font-size: 12px; color: var(--text-muted); text-align: right; }
+  .total-value { font-size: 20px; font-weight: 700; color: var(--primary); text-align: right; }
+
+  /* Inputs */
+  .inputs-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .input-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .input-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    font-family: inherit;
+  }
+  .input-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(234,88,12,0.12);
+  }
+  /* Attendees */
+  .attendees {
+    border-top: 1px dashed var(--border);
+    padding-top: 14px;
+  }
+  .attendees-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .per-person { color: var(--success); font-weight: 600; }
+  .attendee-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .attendee-chip {
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text-muted);
+    user-select: none;
+    transition: all .15s;
+    font-weight: 500;
+  }
+  .attendee-chip:hover { border-color: var(--primary); }
+  .attendee-chip.selected {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+
+  /* Summary table */
+  table.summary, table.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  table.summary th, table.summary td,
+  table.task-table th, table.task-table td {
+    padding: 14px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  table.summary th, table.task-table th {
+    background: #fdf0e1;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+  }
+  table.summary th:first-child, table.summary td:first-child,
+  table.task-table th:first-child, table.task-table td:first-child {
+    text-align: left;
+  }
+  table.summary th .th-sub {
+    display: block;
+    font-size: 11px;
+    color: var(--text-light);
+    font-weight: 500;
+    margin-top: 2px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  table.summary td.total-col { color: var(--primary); font-weight: 700; }
+  table.summary tbody tr:last-child td,
+  table.task-table tbody tr:last-child td { border-bottom: none; }
+
+  /* Phân việc */
+  .task-table select {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    font-size: 13px;
+    width: 100%;
+    font-family: inherit;
+    color: var(--text);
+  }
+  .task-table select:focus {
+    outline: none;
+    border-color: var(--primary);
+  }
+  .task-table td.task-label {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Quỹ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .rollover-row {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .rollover-row .rollover-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rollover-row .rollover-label .main-label {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 14px;
+  }
+  .rollover-row input[type="number"] {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--primary);
+    width: 180px;
+    text-align: right;
+  }
+  .rollover-row input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(234,88,12,0.12);
+  }
+  .contributors-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(234,88,12,0.06);
+  }
+  .contributors-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .contributors-summary {
+    display: flex;
+    gap: 18px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .contributors-summary strong { color: var(--primary); font-size: 14px; }
+  .contributors-actions { display: flex; gap: 8px; }
+  .contributors-actions button {
+    padding: 6px 12px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text-muted);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .contributors-actions button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .contributors-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .contributor-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    user-select: none;
+    transition: all .15s;
+  }
+  .contributor-row:hover { border-color: var(--border-strong); }
+  .contributor-row.paid {
+    background: var(--success-bg);
+    border-color: #bbf7d0;
+  }
+  .contributor-row .num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .contributor-row.paid .num {
+    background: #dcfce7;
+    color: var(--success);
+  }
+  .contributor-row .c-name { flex: 1; font-size: 14px; font-weight: 500; }
+  .contributor-row .c-status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: var(--text-muted);
+  }
+  .contributor-row.paid .c-status {
+    background: var(--success);
+    color: #fff;
+  }
+  @media (max-width: 640px) {
+    .contributors-list { grid-template-columns: 1fr; }
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(234,88,12,0.04);
+  }
+  .stat-card.highlight {
+    background: var(--success-bg);
+    border-color: #bbf7d0;
+  }
+  .stat-card.deficit {
+    background: #fef2f2;
+    border-color: #fecaca;
+  }
+  .stat-card .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .stat-card .stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    margin-top: 6px;
+    color: var(--primary);
+  }
+  .stat-card.neutral .stat-value { color: var(--text); }
+  .stat-card.highlight .stat-value { color: var(--success); }
+  .stat-card.deficit .stat-value { color: var(--danger); }
+  .stat-card .stat-sub {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  /* QR upload */
+  .qr-upload {
+    border: 2px dashed var(--border-strong);
+    border-radius: 14px;
+    padding: 50px 20px;
+    text-align: center;
+    cursor: pointer;
+    background: #fdfaf5;
+    transition: all .15s;
+    display: block;
+  }
+  .qr-upload:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+  .qr-upload img {
+    max-width: 220px;
+    max-height: 220px;
+    border-radius: 8px;
+  }
+  .qr-upload .upload-icon {
+    font-size: 28px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .qr-upload input { display: none; }
+  .qr-upload .upload-text {
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .qr-zoom-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 6px 14px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .qr-zoom-btn:hover { background: var(--primary-soft); }
+
+  /* QR zoom modal */
+  .qr-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .qr-modal-overlay img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  }
+
+  /* Save button */
+  /* Task cell buttons (claim / release / taken) */
+  .task-cell {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .task-claim-btn {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px dashed var(--primary);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .task-claim-btn:hover { background: var(--primary); color: #fff; }
+  .task-claim-btn:disabled { opacity: .5; cursor: wait; }
+  .task-taken {
+    font-size: 13px;
+    color: var(--text);
+    padding: 6px 10px;
+    background: #f3f4f6;
+    border-radius: 8px;
+  }
+  .task-mine {
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 600;
+    padding: 6px 10px;
+    background: var(--primary-soft);
+    border-radius: 8px;
+  }
+  .task-release-btn {
+    background: transparent;
+    color: var(--danger);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .task-release-btn:hover { background: #fef2f2; border-color: var(--danger); }
+
+  /* Identity pill on Task tab */
+  .identity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--primary-soft);
+    border: 1px solid var(--primary);
+    border-radius: 999px;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .identity-pill .identity-name { font-weight: 700; color: var(--primary); }
+  .identity-pill button {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+  }
+  .identity-pill button:hover { color: var(--primary); }
+
+  /* User-selection modal */
+  .user-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .user-modal-backdrop.show { display: flex; }
+  .user-modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  }
+  .user-modal h3 { margin: 0 0 6px; font-size: 18px; }
+  .user-modal p { margin: 0 0 16px; font-size: 13px; color: var(--text-muted); }
+  .user-modal-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .user-modal-list button {
+    background: var(--primary-light);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+  }
+  .user-modal-list button:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .user-modal-list button.selected {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .user-modal-close {
+    margin-top: 14px;
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .user-modal-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 20px; }
+
+  /* Toasts */
+  .toast-container {
+    position: fixed;
+    bottom: 80px;
+    right: 16px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .toast {
+    background: #1f2937;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    max-width: 320px;
+    animation: toast-in .2s ease;
+    pointer-events: auto;
+  }
+  .toast.error { background: var(--danger); }
+  .toast.success { background: var(--success); }
+  @keyframes toast-in {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .save-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border-top: 2px solid var(--primary);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 9998;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+  }
+  .save-bar.show { transform: translateY(0); }
+  .save-bar-text {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .save-bar-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(234,88,12,0.3);
+  }
+  .save-bar-btn:hover { background: var(--primary-hover); }
+  .save-bar-btn:disabled {
+    background: var(--text-light);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .save-bar-btn.discard {
+    background: #fff;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    box-shadow: none;
+  }
+  .save-bar-btn.discard:hover {
+    background: #f3f4f6;
+    color: var(--danger);
+  }
+
+  /* Team */
+  .add-member-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .add-member-row input {
+    flex: 1;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .add-member-row input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(234,88,12,0.12);
+  }
+  .btn-primary {
+    padding: 13px 22px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .member-row {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .member-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .member-name-input {
+    flex: 1;
+    border: 1px solid transparent;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text);
+    font-family: inherit;
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  .member-name-input:hover {
+    border-color: var(--border);
+    background: #fdfaf5;
+  }
+  .member-name-input:focus {
+    outline: none;
+    background: var(--primary-light);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(234,88,12,0.12);
+  }
+  .member-actions { display: flex; gap: 6px; }
+  .icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px 8px;
+    font-size: 15px;
+    border-radius: 6px;
+  }
+  .icon-btn:hover { color: var(--primary); background: var(--primary-light); }
+  .icon-btn.danger:hover { color: var(--danger); background: #fef2f2; }
+
+  h2.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (max-width: 720px) {
+    body { padding: 12px; }
+    .inputs-row { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .day-chips { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .day-chip { padding: 10px 4px; }
+    .day-chip .day-name { font-size: 13px; }
+    .day-chip .day-date { font-size: 11px; }
+    .tabs { overflow-x: auto; }
+    .tab { font-size: 12px; padding: 10px 8px; }
+    table.summary, table.task-table { font-size: 12px; }
+    table.summary th, table.summary td,
+    table.task-table th, table.task-table td { padding: 10px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="save-bar" id="saveBar">
+  <span class="save-bar-text">Có thay đổi chưa lưu</span>
+  <button class="save-bar-btn discard" onclick="doDiscardClick()">Không lưu</button>
+  <button class="save-bar-btn" id="saveBtn" onclick="doSaveClick()">💾 Lưu</button>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="user-modal-backdrop" id="userModal">
+  <div class="user-modal">
+    <h3>👤 Bạn là ai?</h3>
+    <p>Chọn tên của bạn để có thể nhận và huỷ công việc. Lựa chọn sẽ được ghi nhớ trên thiết bị này.</p>
+    <div class="user-modal-list" id="userModalList"></div>
+    <button class="user-modal-close" id="userModalClose" style="display:none" onclick="closeUserModal()">Đóng</button>
+  </div>
+</div>
+
+<header class="app-header">
+  <div class="app-header-icon">🍽️</div>
+  <div class="app-header-text">
+    <h1 class="app-title">Hợp tác xã Marketing</h1>
+    <div class="app-subtitle">Quản lý tiền ăn trưa</div>
+  </div>
+</header>
+
+<div class="week-nav">
+  <button class="nav-btn" onclick="changeWeek(-1)" aria-label="Tuần trước">‹</button>
+  <div class="week-range" title="Nhấn để chọn ngày">
+    <span class="calendar-icon">📅</span>
+    <span id="weekRangeText"></span>
+    <span class="chevron">▼</span>
+    <span class="badge-today" id="todayBadge" style="display:none">Hôm nay</span>
+    <input type="date" id="datePicker" class="hidden-date" title="Chọn ngày">
+  </div>
+  <button class="nav-btn" onclick="changeWeek(1)" aria-label="Tuần sau">›</button>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="cost" onclick="setTab('cost')"><span>💎</span> Chi phí</div>
+  <div class="tab" data-tab="summary" onclick="setTab('summary')"><span>📊</span> Tổng hợp</div>
+  <div class="tab" data-tab="tasks" onclick="setTab('tasks')"><span>📋</span> Phân việc</div>
+  <div class="tab" data-tab="fund" onclick="setTab('fund')"><span>💰</span> Quỹ</div>
+  <div class="tab" data-tab="team" onclick="setTab('team')"><span>👥</span> Team</div>
+</div>
+
+<div id="tabContent"></div>
+
+<script>
+/* --- Constants --- */
+const RICE_PRICE = 0;
+const FUND_PER_PERSON = 150000;
+const WEEKDAYS = 5;
+const DAY_NAMES = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6"];
+
+/* --- State --- */
+const state = {
+  members: [],
+  weeks: {},
+  activeTab: "cost",
+  activeDay: 0,
+  currentWeekStart: null,
+  startWeekKey: null, // tuần đầu tiên app bắt đầu tracking (YYYY-MM-DD của thứ 2)
+  currentMemberId: null, // identity của người dùng trên thiết bị này (localStorage)
+};
+
+/* --- Date utilities --- */
+function getMondayOf(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  return d;
+}
+function addDays(date, n) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+function dateKey(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${dd}`;
+}
+function formatDMY(date) {
+  return `${String(date.getDate()).padStart(2,"0")}/${String(date.getMonth()+1).padStart(2,"0")}/${date.getFullYear()}`;
+}
+function formatDM(date) {
+  return `${String(date.getDate()).padStart(2,"0")}/${String(date.getMonth()+1).padStart(2,"0")}`;
+}
+
+/* --- Formatting --- */
+function fmt(n) {
+  if (isNaN(n) || !isFinite(n)) n = 0;
+  return new Intl.NumberFormat("vi-VN").format(Math.round(n)) + "đ";
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* --- Data helpers --- */
+function currentWeekKey() { return dateKey(state.currentWeekStart); }
+function getOrCreateWeek() {
+  const k = currentWeekKey();
+  if (!state.weeks[k]) {
+    state.weeks[k] = {
+      days: {},
+      assignments: {},
+      qrImage: null,
+      contributors: [], // mặc định chưa ai đóng
+      rolloverOverride: null,
+    };
+  }
+  const w = state.weeks[k];
+  if (!Array.isArray(w.contributors)) w.contributors = [];
+  if (w.rolloverOverride === undefined) w.rolloverOverride = null;
+  return w;
+}
+
+/**
+ * Số dư cuối tuần = quỹ tuần - tổng chi tuần
+ * quỹ tuần = tổng tiền đóng tuần đó + dư tuần trước
+ * Hàm này đệ quy tính dư tuần trước từ lịch sử.
+ */
+function computeWeekEndingBalance(weekStart, depth) {
+  if (depth > 104) return 0; // giới hạn an toàn: tối đa 2 năm
+  const k = dateKey(weekStart);
+  // Trước mốc bắt đầu tracking → không có dữ liệu, số dư = 0
+  if (state.startWeekKey && k < state.startWeekKey) return 0;
+  const w = state.weeks[k];
+  if (!w) return 0;
+
+  const contributed = (w.contributors || []).length * FUND_PER_PERSON;
+  const rollover = getWeekRollover(weekStart, depth + 1);
+  const fund = contributed + rollover;
+
+  // Đếm đủ 5 ngày trong tuần, ngày chưa có data thì dùng default giống tab Chi phí
+  // (để khớp với cách calcWeekTotalSpent hiển thị Tổng chi tuần).
+  let spent = 0;
+  for (let i = 0; i < WEEKDAYS; i++) {
+    const date = addDays(weekStart, i);
+    const dk = dateKey(date);
+    const day = (w.days && w.days[dk]) || {
+      main: 0, soup: 0, fruit: 0, rice: RICE_PRICE,
+      attendees: state.members.map(m => m.id)
+    };
+    if ((day.attendees || []).length > 0) {
+      spent += (day.main || 0) + (day.soup || 0) + (day.fruit || 0) + (day.rice || 0);
+    }
+  }
+  return fund - spent;
+}
+
+/**
+ * Dư tuần trước để đưa vào tuần hiện tại.
+ * Nếu tuần này có override do user đặt thủ công thì dùng override.
+ * Nếu không thì tự động = số dư cuối của tuần trước.
+ */
+function getWeekRollover(weekStart, depth = 0) {
+  const k = dateKey(weekStart);
+  const w = state.weeks[k];
+  if (w && w.rolloverOverride !== null && w.rolloverOverride !== undefined) {
+    return w.rolloverOverride;
+  }
+  // Nếu đây là tuần đầu tiên (hoặc trước mốc bắt đầu) thì không có tuần trước để rollover
+  if (state.startWeekKey && k <= state.startWeekKey) return 0;
+  const prevStart = addDays(weekStart, -7);
+  return computeWeekEndingBalance(prevStart, depth);
+}
+
+function isRolloverManual() {
+  const w = state.weeks[currentWeekKey()];
+  return !!(w && w.rolloverOverride !== null && w.rolloverOverride !== undefined);
+}
+function setWeekRolloverOverride(value) {
+  const w = getOrCreateWeek();
+  w.rolloverOverride = value;
+}
+function clearWeekRolloverOverride() {
+  const w = getOrCreateWeek();
+  w.rolloverOverride = null;
+}
+function getOrCreateDay(dayIndex) {
+  const w = getOrCreateWeek();
+  const date = addDays(state.currentWeekStart, dayIndex);
+  const dk = dateKey(date);
+  if (!w.days[dk]) {
+    w.days[dk] = {
+      main: 0, soup: 0, fruit: 0, rice: RICE_PRICE,
+      attendees: state.members.map(m => m.id)
+    };
+  }
+  return w.days[dk];
+}
+function getDayData(dayIndex) {
+  const w = getOrCreateWeek();
+  const date = addDays(state.currentWeekStart, dayIndex);
+  const dk = dateKey(date);
+  if (w.days[dk]) return w.days[dk];
+  return {
+    main: 0, soup: 0, fruit: 0, rice: RICE_PRICE,
+    attendees: state.members.map(m => m.id)
+  };
+}
+function getAssignments(dayIndex) {
+  const w = getOrCreateWeek();
+  const date = addDays(state.currentWeekStart, dayIndex);
+  const dk = dateKey(date);
+  if (!w.assignments[dk]) w.assignments[dk] = { main: null, soup: null, fruit: null, rice: null };
+  return w.assignments[dk];
+}
+function dayTotal(day) {
+  return (day.main || 0) + (day.soup || 0) + (day.fruit || 0) + (day.rice || 0);
+}
+
+/* --- Persistence (API only, localStorage chỉ lưu UI state) --- */
+const SCHEMA_VERSION = 3;
+const DATA_API = "/api/data";
+const UI_KEY = "teamLunchUI";
+let _saveTimer = null;
+let _loaded = false; // true sau khi load xong từ API
+
+function getPayload() {
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    members: state.members,
+    weeks: state.weeks,
+    startWeekKey: state.startWeekKey,
+  };
+}
+
+// Chỉ lưu UI state (tab, ngày, tuần) vào localStorage
+function _saveUI() {
+  try {
+    localStorage.setItem(UI_KEY, JSON.stringify({
+      currentWeekStart: state.currentWeekStart ? dateKey(state.currentWeekStart) : null,
+      activeTab: state.activeTab,
+      activeDay: state.activeDay,
+    }));
+  } catch(e) {}
+}
+
+function _loadUI() {
+  try {
+    const raw = localStorage.getItem(UI_KEY);
+    if (raw) {
+      const ui = JSON.parse(raw);
+      if (ui.currentWeekStart) {
+        const [y, m, d] = ui.currentWeekStart.split("-").map(Number);
+        state.currentWeekStart = getMondayOf(new Date(y, m - 1, d));
+      }
+      if (ui.activeTab) state.activeTab = ui.activeTab;
+      if (typeof ui.activeDay === "number") state.activeDay = ui.activeDay;
+    }
+  } catch(e) {}
+}
+
+// save() = đánh dấu có thay đổi, hiện nút Lưu
+function save() {
+  _saveUI();
+  if (!_loaded) return;
+  document.getElementById("saveBar").classList.add("show");
+}
+
+// saveNow() = giống save(), hiện nút Lưu
+function saveNow() {
+  save();
+}
+
+// Khi user nhấn nút Lưu
+async function doSaveClick() {
+  const btn = document.getElementById("saveBtn");
+  btn.disabled = true;
+  btn.textContent = "Đang lưu...";
+  try {
+    const res = await fetch(DATA_API, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(getPayload()),
+    });
+    if (res.ok) {
+      btn.textContent = "✓ Đã lưu";
+      setTimeout(() => {
+        document.getElementById("saveBar").classList.remove("show");
+        btn.disabled = false;
+        btn.textContent = "💾 Lưu";
+      }, 1500);
+    } else {
+      btn.textContent = "Lỗi! Thử lại";
+      btn.disabled = false;
+    }
+  } catch (e) {
+    console.warn("Save failed", e);
+    btn.textContent = "Lỗi! Thử lại";
+    btn.disabled = false;
+  }
+}
+
+// Không lưu — load lại data từ API, bỏ thay đổi
+async function doDiscardClick() {
+  _loaded = false;
+  await load();
+  if (!state.currentWeekStart) {
+    state.currentWeekStart = addDays(getMondayOf(new Date()), 7);
+    state.activeDay = defaultDayIndex();
+  }
+  document.getElementById("saveBar").classList.remove("show");
+  render();
+}
+
+async function load() {
+  // Load data từ API (nguồn duy nhất)
+  try {
+    const res = await fetch(DATA_API);
+    if (res.ok) {
+      const data = await res.json();
+      state.members = data.members || [];
+      state.weeks = data.weeks || {};
+      state.startWeekKey = data.startWeekKey || null;
+    }
+  } catch (e) { console.warn("API load failed", e); }
+  // Default members nếu API trả về rỗng
+  if (!state.members || state.members.length === 0) {
+    state.members = [];
+    for (let i = 1; i <= 10; i++) state.members.push({ id: i, name: `Thành viên ${i}` });
+  }
+  if (!state.startWeekKey) {
+    state.startWeekKey = dateKey(addDays(getMondayOf(new Date()), 7));
+  }
+  // Khôi phục UI state từ localStorage
+  _loadUI();
+  _loadCurrentUser();
+  _loaded = true;
+}
+
+/* --- Identity (trust-based, per device) --- */
+const USER_KEY = "teamLunchUserId";
+const CLAIM_API = "/api/claim";
+
+function _loadCurrentUser() {
+  try {
+    const raw = localStorage.getItem(USER_KEY);
+    if (raw) {
+      const id = parseInt(raw);
+      if (!isNaN(id) && state.members.some(m => m.id === id)) {
+        state.currentMemberId = id;
+      } else {
+        localStorage.removeItem(USER_KEY);
+      }
+    }
+  } catch (e) {}
+}
+function setCurrentUser(id) {
+  state.currentMemberId = id;
+  try { localStorage.setItem(USER_KEY, String(id)); } catch (e) {}
+}
+function getCurrentUser() {
+  if (!state.currentMemberId) return null;
+  return state.members.find(m => m.id === state.currentMemberId) || null;
+}
+function openUserModal(closable = false) {
+  const modal = document.getElementById("userModal");
+  const list = document.getElementById("userModalList");
+  const closeBtn = document.getElementById("userModalClose");
+  closeBtn.style.display = closable ? "block" : "none";
+  if (!state.members || state.members.length === 0) {
+    list.innerHTML = '<div class="user-modal-empty">Chưa có thành viên nào. Vào tab Team để thêm.</div>';
+  } else {
+    list.innerHTML = state.members.map(m => {
+      const selected = m.id === state.currentMemberId ? "selected" : "";
+      return `<button class="${selected}" data-uid="${m.id}">${escapeHtml(m.name)}</button>`;
+    }).join("");
+    list.querySelectorAll("button[data-uid]").forEach(btn => {
+      btn.onclick = () => {
+        const id = parseInt(btn.dataset.uid);
+        setCurrentUser(id);
+        closeUserModal();
+        render();
+      };
+    });
+  }
+  modal.classList.add("show");
+}
+function closeUserModal() {
+  document.getElementById("userModal").classList.remove("show");
+}
+
+/* --- Toast --- */
+function showToast(message, type = "info", duration = 3000) {
+  const c = document.getElementById("toastContainer");
+  if (!c) return;
+  const el = document.createElement("div");
+  el.className = "toast " + (type || "");
+  el.textContent = message;
+  c.appendChild(el);
+  setTimeout(() => {
+    el.style.transition = "opacity .25s";
+    el.style.opacity = "0";
+    setTimeout(() => el.remove(), 300);
+  }, duration);
+}
+
+/* --- Claim / Release --- */
+async function sendClaim(weekKey, dayKey, task, action) {
+  const mid = state.currentMemberId;
+  if (!mid) { openUserModal(false); return; }
+  try {
+    const res = await fetch(CLAIM_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ weekKey, dayKey, task, memberId: mid, action }),
+    });
+    const payload = await res.json().catch(() => ({}));
+    if (res.ok) {
+      if (payload.assignments) {
+        if (!state.weeks[weekKey]) state.weeks[weekKey] = { days:{}, assignments:{}, qrImage:null, contributors:[], rolloverOverride:null };
+        if (!state.weeks[weekKey].assignments) state.weeks[weekKey].assignments = {};
+        state.weeks[weekKey].assignments[dayKey] = payload.assignments;
+      }
+      render();
+      return;
+    }
+    if (res.status === 409) {
+      showToast(`${payload.currentClaimerName || "Người khác"} đã nhận trước bạn`, "error");
+      if (payload.assignments) {
+        if (!state.weeks[weekKey]) state.weeks[weekKey] = { days:{}, assignments:{}, qrImage:null, contributors:[], rolloverOverride:null };
+        if (!state.weeks[weekKey].assignments) state.weeks[weekKey].assignments = {};
+        state.weeks[weekKey].assignments[dayKey] = payload.assignments;
+      }
+      render();
+      return;
+    }
+    if (res.status === 403) {
+      showToast(payload.error || "Không có quyền huỷ", "error");
+      return;
+    }
+    showToast("Lỗi: " + (payload.error || res.status), "error");
+  } catch (e) {
+    console.warn("claim failed", e);
+    showToast("Lỗi mạng, thử lại", "error");
+  }
+}
+
+/* --- Auto-refresh --- */
+let _refreshTimer = null;
+const REFRESH_INTERVAL_MS = 10000;
+
+function startAutoRefresh() {
+  if (_refreshTimer) return;
+  _refreshTimer = setInterval(autoRefreshTick, REFRESH_INTERVAL_MS);
+}
+async function autoRefreshTick() {
+  if (!_loaded) return;
+  // Nếu đang có thay đổi chưa lưu trên tab khác → không refresh để không mất input
+  const bar = document.getElementById("saveBar");
+  if (bar && bar.classList.contains("show")) return;
+  // Nếu đang mở modal chọn identity → không refresh (tránh flicker)
+  const modal = document.getElementById("userModal");
+  if (modal && modal.classList.contains("show")) return;
+  try {
+    const res = await fetch(DATA_API, { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    state.members = data.members || state.members;
+    state.weeks = data.weeks || {};
+    if (data.startWeekKey) state.startWeekKey = data.startWeekKey;
+    // Nếu identity không còn tồn tại trong members → clear
+    if (state.currentMemberId && !state.members.some(m => m.id === state.currentMemberId)) {
+      state.currentMemberId = null;
+      try { localStorage.removeItem(USER_KEY); } catch(e) {}
+    }
+    render();
+  } catch (e) { /* ignore */ }
+}
+
+/* --- Navigation --- */
+function changeWeek(delta) {
+  state.currentWeekStart = addDays(state.currentWeekStart, delta * 7);
+  state.activeDay = defaultDayIndex();
+  _saveUI();
+  render();
+}
+function setTab(tab) { state.activeTab = tab; _saveUI(); render(); }
+function setDay(dayIndex) { state.activeDay = dayIndex; _saveUI(); render(); }
+function defaultDayIndex() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diff = Math.round((today - state.currentWeekStart) / (1000 * 60 * 60 * 24));
+  if (diff >= 0 && diff < WEEKDAYS) return diff;
+  return 0;
+}
+
+/* --- Render --- */
+function render() {
+  renderWeekNav();
+  renderTabsUI();
+  const content = document.getElementById("tabContent");
+  content.innerHTML = "";
+  switch (state.activeTab) {
+    case "cost":    renderCostTab(content); break;
+    case "summary": renderSummaryTab(content); break;
+    case "tasks":   renderTasksTab(content); break;
+    case "fund":    renderFundTab(content); break;
+    case "team":    renderTeamTab(content); break;
+  }
+}
+
+function renderWeekNav() {
+  const start = state.currentWeekStart;
+  const end = addDays(start, WEEKDAYS - 1);
+  document.getElementById("weekRangeText").textContent = `${formatDM(start)} - ${formatDMY(end)}`;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const inRange = today >= start && today <= addDays(start, 6);
+  document.getElementById("todayBadge").style.display = inRange ? "" : "none";
+  const dp = document.getElementById("datePicker");
+  if (dp) dp.value = dateKey(start);
+}
+
+function initDatePicker() {
+  const dp = document.getElementById("datePicker");
+  if (!dp) return;
+  dp.addEventListener("change", () => {
+    if (!dp.value) return;
+    const [y, m, d] = dp.value.split("-").map(Number);
+    const picked = new Date(y, m - 1, d);
+    state.currentWeekStart = getMondayOf(picked);
+    state.activeDay = defaultDayIndex();
+    _saveUI();
+    render();
+  });
+  // Cố gắng mở picker khi user bấm vào input (nhiều browser đã tự mở, đây chỉ là backup)
+  dp.addEventListener("click", () => {
+    if (typeof dp.showPicker === "function") {
+      try { dp.showPicker(); } catch (e) { /* ignore */ }
+    }
+  });
+}
+
+function renderTabsUI() {
+  document.querySelectorAll(".tab").forEach(t => {
+    t.classList.toggle("active", t.dataset.tab === state.activeTab);
+  });
+}
+
+/* ---- Tab: Chi phí ---- */
+function renderCostTab(root) {
+  // Day chips
+  const chips = document.createElement("div");
+  chips.className = "day-chips";
+  for (let i = 0; i < WEEKDAYS; i++) {
+    const d = addDays(state.currentWeekStart, i);
+    const chip = document.createElement("div");
+    chip.className = "day-chip" + (i === state.activeDay ? " active" : "");
+    chip.onclick = () => setDay(i);
+    chip.innerHTML = `<div class="day-name">${DAY_NAMES[i]}</div><div class="day-date">${formatDM(d)}</div>`;
+    chips.appendChild(chip);
+  }
+  root.appendChild(chips);
+
+  // Day card
+  const dayIdx = state.activeDay;
+  const day = getOrCreateDay(dayIdx);
+  const date = addDays(state.currentWeekStart, dayIdx);
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <div class="card-head">
+      <div class="card-title">${DAY_NAMES[dayIdx]} <span class="muted">(${formatDM(date)})</span></div>
+      <div>
+        <div class="total-label">Tổng chi</div>
+        <div class="total-value" id="dayTotalValue"></div>
+      </div>
+    </div>
+    <div class="inputs-row">
+      <div class="input-group">
+        <label>🍲 Món chính</label>
+        <input type="number" min="0" step="1000" value="${day.main || 0}" data-field="main" placeholder="0">
+      </div>
+      <div class="input-group">
+        <label>🥣 Canh</label>
+        <input type="number" min="0" step="1000" value="${day.soup || 0}" data-field="soup" placeholder="0">
+      </div>
+      <div class="input-group">
+        <label>🍊 Hoa quả</label>
+        <input type="number" min="0" step="1000" value="${day.fruit || 0}" data-field="fruit" placeholder="0">
+      </div>
+    </div>
+    <div class="inputs-row" style="margin-top:0">
+      <div class="input-group">
+        <label>🍚 Tiền cơm</label>
+        <input type="number" min="0" step="1000" value="${day.rice || 0}" data-field="rice" placeholder="0">
+      </div>
+    </div>
+    <div class="attendees">
+      <div class="attendees-header">
+        <span id="attHeaderCount"></span>
+        <span class="per-person" id="perPersonText"></span>
+      </div>
+      <div class="attendee-chips" id="attendeeChips"></div>
+    </div>
+  `;
+  root.appendChild(card);
+
+  const updateTotals = () => {
+    const total = dayTotal(day);
+    const n = day.attendees.length;
+    const per = n > 0 ? total / n : 0;
+    card.querySelector("#dayTotalValue").textContent = fmt(total);
+    card.querySelector("#attHeaderCount").textContent = `Người ăn (${n} người)`;
+    card.querySelector("#perPersonText").textContent = `${fmt(per)}/người`;
+  };
+  updateTotals();
+
+  card.querySelectorAll("input[data-field]").forEach(inp => {
+    inp.addEventListener("input", () => {
+      day[inp.dataset.field] = parseFloat(inp.value) || 0;
+      updateTotals();
+      save();
+    });
+  });
+
+  const chipBox = card.querySelector("#attendeeChips");
+  const renderChips = () => {
+    chipBox.innerHTML = "";
+    state.members.forEach(m => {
+      const sel = day.attendees.includes(m.id);
+      const chip = document.createElement("div");
+      chip.className = "attendee-chip" + (sel ? " selected" : "");
+      chip.textContent = m.name;
+      chip.onclick = () => {
+        if (day.attendees.includes(m.id)) {
+          day.attendees = day.attendees.filter(id => id !== m.id);
+        } else {
+          day.attendees.push(m.id);
+        }
+        save();
+        renderChips();
+        updateTotals();
+      };
+      chipBox.appendChild(chip);
+    });
+  };
+  renderChips();
+}
+
+/* ---- Tab: Tổng hợp ---- */
+function renderSummaryTab(root) {
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.innerHTML = "💰 Tiền đóng hàng ngày";
+  root.appendChild(title);
+
+  const card = document.createElement("div");
+  card.className = "card flush";
+
+  let html = '<table class="summary"><thead><tr><th>Thành viên</th>';
+  for (let i = 0; i < WEEKDAYS; i++) {
+    const d = addDays(state.currentWeekStart, i);
+    html += `<th>${DAY_NAMES[i]}<span class="th-sub">${formatDM(d)}</span></th>`;
+  }
+  html += '<th>Tổng tuần</th></tr></thead><tbody>';
+
+  state.members.forEach(m => {
+    html += `<tr><td>${escapeHtml(m.name)}</td>`;
+    let weekTotal = 0;
+    for (let i = 0; i < WEEKDAYS; i++) {
+      const day = getDayData(i);
+      const n = day.attendees.length;
+      const ate = day.attendees.includes(m.id);
+      const share = (ate && n > 0) ? dayTotal(day) / n : 0;
+      weekTotal += share;
+      html += `<td>${fmt(share)}</td>`;
+    }
+    html += `<td class="total-col">${fmt(weekTotal)}</td></tr>`;
+  });
+
+  html += '</tbody></table>';
+  card.innerHTML = html;
+  root.appendChild(card);
+}
+
+/* ---- Tab: Phân việc ---- */
+function renderTasksTab(root) {
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.innerHTML = "📋 Phân chia công việc trong tuần";
+  root.appendChild(title);
+
+  // Identity pill
+  const me = getCurrentUser();
+  const pill = document.createElement("div");
+  pill.className = "identity-pill";
+  if (me) {
+    pill.innerHTML = `👤 Bạn là: <span class="identity-name">${escapeHtml(me.name)}</span>
+      <button onclick="openUserModal(true)">đổi</button>`;
+  } else {
+    pill.innerHTML = `👤 <em>Chưa chọn danh tính</em>
+      <button onclick="openUserModal(true)" style="text-decoration:none;background:var(--primary);color:#fff;border-radius:6px;padding:4px 10px">Chọn tên</button>`;
+  }
+  root.appendChild(pill);
+
+  const card = document.createElement("div");
+  card.className = "card flush";
+
+  const tasks = [
+    { key: "main",  label: "🍲 Nấu món chính" },
+    { key: "soup",  label: "🥣 Nấu canh" },
+    { key: "fruit", label: "🍎 Mua hoa quả" },
+    { key: "rice",  label: "🍚 Nấu cơm" },
+  ];
+
+  const weekKey = currentWeekKey();
+
+  let html = '<table class="task-table"><thead><tr><th>Công việc</th>';
+  for (let i = 0; i < WEEKDAYS; i++) {
+    const d = addDays(state.currentWeekStart, i);
+    html += `<th>${DAY_NAMES[i]}<span class="th-sub" style="display:block;font-size:11px;color:#9ca3af;font-weight:500;margin-top:2px;text-transform:none">${formatDM(d)}</span></th>`;
+  }
+  html += '</tr></thead><tbody>';
+
+  tasks.forEach(task => {
+    html += `<tr><td class="task-label">${task.label}</td>`;
+    for (let i = 0; i < WEEKDAYS; i++) {
+      const d = addDays(state.currentWeekStart, i);
+      const dk = dateKey(d);
+      const assn = getAssignments(i);
+      const current = assn[task.key];
+      html += `<td><div class="task-cell" data-day="${dk}" data-task="${task.key}">`;
+      if (current === null || current === undefined) {
+        if (me) {
+          html += `<button class="task-claim-btn" data-action="claim">+ Nhận</button>`;
+        } else {
+          html += `<button class="task-claim-btn" onclick="openUserModal(true)">+ Nhận</button>`;
+        }
+      } else if (me && current === me.id) {
+        html += `<span class="task-mine">${escapeHtml(me.name)} (bạn)</span>
+          <button class="task-release-btn" data-action="release">✕ Huỷ</button>`;
+      } else {
+        const other = state.members.find(x => x.id === current);
+        const name = other ? other.name : `Member #${current}`;
+        html += `<span class="task-taken">${escapeHtml(name)}</span>`;
+      }
+      html += `</div></td>`;
+    }
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  card.innerHTML = html;
+  root.appendChild(card);
+
+  // Wire up buttons
+  card.querySelectorAll(".task-cell").forEach(cell => {
+    const dk = cell.dataset.day;
+    const taskKey = cell.dataset.task;
+    cell.querySelectorAll("button[data-action]").forEach(btn => {
+      btn.onclick = async () => {
+        btn.disabled = true;
+        await sendClaim(weekKey, dk, taskKey, btn.dataset.action);
+      };
+    });
+  });
+}
+
+/* ---- Tab: Quỹ ---- */
+function renderFundTab(root) {
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.innerHTML = "💼 Quản lý quỹ";
+  root.appendChild(title);
+
+  const week = getOrCreateWeek();
+  const contributors = week.contributors || [];
+  const contributedThisWeek = contributors.length * FUND_PER_PERSON;
+  const rollover = getWeekRollover(state.currentWeekStart);
+  const manual = isRolloverManual();
+
+  // Rollover editor
+  const rolloverBox = document.createElement("div");
+  rolloverBox.className = "rollover-row";
+  const prevStart = addDays(state.currentWeekStart, -7);
+  const prevEnd = addDays(prevStart, WEEKDAYS - 1);
+  const prevRange = `${formatDM(prevStart)} - ${formatDM(prevEnd)}`;
+  rolloverBox.innerHTML = `
+    <div class="rollover-label">
+      <span style="font-size:18px">📦</span>
+      <div>
+        <div class="main-label">Dư tuần trước ${manual ? '<span style="color:#ea580c;font-size:11px;font-weight:600;background:#fff1e7;padding:2px 8px;border-radius:999px;margin-left:6px">Thủ công</span>' : '<span style="color:#16a34a;font-size:11px;font-weight:600;background:#dcfce7;padding:2px 8px;border-radius:999px;margin-left:6px">Tự động</span>'}</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:2px">Tuần ${prevRange} · có thể âm hoặc dương${manual ? "" : " · tự tính từ tuần trước"}</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="number" step="1000" id="rolloverInput" value="${rollover}" placeholder="0">
+      ${manual ? '<button id="resetRollover" class="contributors-actions-btn" style="padding:10px 14px;font-size:12px;border:1px solid #f5e6d3;background:#fff;color:#6b7280;border-radius:10px;cursor:pointer;font-family:inherit">↺ Tự động</button>' : ''}
+    </div>
+  `;
+  root.appendChild(rolloverBox);
+
+  const rolloverInput = rolloverBox.querySelector("#rolloverInput");
+  rolloverInput.addEventListener("input", (e) => {
+    const v = parseFloat(e.target.value);
+    setWeekRolloverOverride(isNaN(v) ? 0 : v);
+    save();
+    updateFundStats(); // cập nhật card real-time khi đang gõ
+  });
+  rolloverInput.addEventListener("change", () => {
+    render(); // rerender đầy đủ khi blur để cập nhật badge "Thủ công" và nút reset
+  });
+  const resetBtn = rolloverBox.querySelector("#resetRollover");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      clearWeekRolloverOverride();
+      save();
+      render();
+    });
+  }
+
+  // Stats grid
+  const grid = document.createElement("div");
+  grid.className = "stats-grid";
+  grid.id = "fundStatsGrid";
+  root.appendChild(grid);
+  renderFundStatsInto(grid);
+
+  // Contributors management
+  const contribCard = document.createElement("div");
+  contribCard.className = "contributors-card";
+  contribCard.innerHTML = `
+    <div class="contributors-head">
+      <h2 class="section-title" style="margin:0">👛 Người đóng tiền tuần này</h2>
+      <div class="contributors-actions">
+        <button id="markAllPaid">Tất cả đã đóng</button>
+        <button id="markAllUnpaid">Bỏ chọn tất cả</button>
+      </div>
+    </div>
+    <div class="contributors-summary">
+      <div>Đã đóng: <strong id="paidCount">${contributors.length}/${state.members.length}</strong></div>
+      <div>Tổng thu: <strong id="paidTotal">${fmt(contributedThisWeek)}</strong></div>
+    </div>
+    <div class="contributors-list" id="contributorsList"></div>
+  `;
+  root.appendChild(contribCard);
+
+  const listEl = contribCard.querySelector("#contributorsList");
+  const renderContribList = () => {
+    listEl.innerHTML = "";
+    state.members.forEach((m, idx) => {
+      const paid = (week.contributors || []).includes(m.id);
+      const row = document.createElement("div");
+      row.className = "contributor-row" + (paid ? " paid" : "");
+      row.innerHTML = `
+        <div class="num">${idx + 1}</div>
+        <div class="c-name">${escapeHtml(m.name)}</div>
+        <div class="c-status">${paid ? "✓ Đã đóng" : "Chưa đóng"}</div>
+      `;
+      row.onclick = () => {
+        if (!Array.isArray(week.contributors)) week.contributors = [];
+        if (week.contributors.includes(m.id)) {
+          week.contributors = week.contributors.filter(id => id !== m.id);
+        } else {
+          week.contributors.push(m.id);
+        }
+        save();
+        renderContribList();
+        updateContribSummary();
+        updateFundStats();
+      };
+      listEl.appendChild(row);
+    });
+  };
+  const updateContribSummary = () => {
+    const cnt = (week.contributors || []).length;
+    contribCard.querySelector("#paidCount").textContent = `${cnt}/${state.members.length}`;
+    contribCard.querySelector("#paidTotal").textContent = fmt(cnt * FUND_PER_PERSON);
+  };
+  renderContribList();
+
+  contribCard.querySelector("#markAllPaid").onclick = () => {
+    week.contributors = state.members.map(m => m.id);
+    save();
+    renderContribList();
+    updateContribSummary();
+    updateFundStats();
+  };
+  contribCard.querySelector("#markAllUnpaid").onclick = () => {
+    week.contributors = [];
+    save();
+    renderContribList();
+    updateContribSummary();
+    updateFundStats();
+  };
+
+  // QR upload
+  const DEFAULT_QR = "qr-default.jpg";
+  const qrCard = document.createElement("div");
+  qrCard.className = "card";
+  qrCard.innerHTML = `
+    <h2 class="section-title" style="margin-bottom:12px">📱 Mã QR thủ quỹ</h2>
+    <label class="qr-upload">
+      <input type="file" accept="image/*" id="qrInput">
+      <div id="qrContent"></div>
+    </label>
+  `;
+  root.appendChild(qrCard);
+
+  const qrSrc = week.qrImage || DEFAULT_QR;
+  const qrContent = qrCard.querySelector("#qrContent");
+  qrContent.innerHTML = `<img src="${escapeHtml(qrSrc)}" alt="QR thủ quỹ"><div style="font-size:12px;color:#6b7280;margin-top:10px">Nhấn để đổi ảnh khác</div><button type="button" class="qr-zoom-btn" id="qrZoomBtn">🔍 Phóng to</button>`;
+
+  // Zoom modal
+  qrCard.querySelector("#qrZoomBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const overlay = document.createElement("div");
+    overlay.className = "qr-modal-overlay";
+    overlay.innerHTML = `<img src="${escapeHtml(qrSrc)}" alt="QR thủ quỹ">`;
+    overlay.addEventListener("click", () => overlay.remove());
+    document.body.appendChild(overlay);
+  });
+
+  qrCard.querySelector("#qrInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      week.qrImage = reader.result;
+      save();
+      render();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderFundStatsInto(grid) {
+  const week = getOrCreateWeek();
+  const contributors = week.contributors || [];
+  const contributedThisWeek = contributors.length * FUND_PER_PERSON;
+  const rollover = getWeekRollover(state.currentWeekStart);
+  const fund = contributedThisWeek + rollover;
+  const totalSpent = calcWeekTotalSpent();
+  const balance = fund - totalSpent;
+
+  const rolloverDisplay = rollover === 0
+    ? ""
+    : `<div class="stat-sub">${rollover > 0 ? "+" : ""}${fmt(rollover)} dư tuần trước</div>`;
+  grid.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Quỹ tuần</div>
+      <div class="stat-value">${fmt(fund)}</div>
+      <div class="stat-sub">${contributors.length}/${state.members.length} người × ${fmt(FUND_PER_PERSON)}</div>
+      ${rolloverDisplay}
+    </div>
+    <div class="stat-card neutral">
+      <div class="stat-label">Tổng chi tuần</div>
+      <div class="stat-value">${fmt(totalSpent)}</div>
+    </div>
+    <div class="stat-card ${balance >= 0 ? "highlight" : "deficit"}">
+      <div class="stat-label">${balance >= 0 ? "↗ Dư cuối tuần" : "↘ Thiếu"}</div>
+      <div class="stat-value">${fmt(Math.abs(balance))}</div>
+    </div>
+  `;
+}
+
+function updateFundStats() {
+  const grid = document.getElementById("fundStatsGrid");
+  if (grid) renderFundStatsInto(grid);
+}
+
+function calcWeekTotalSpent() {
+  let total = 0;
+  for (let i = 0; i < WEEKDAYS; i++) {
+    const day = getDayData(i);
+    if (day.attendees.length > 0) total += dayTotal(day);
+  }
+  return total;
+}
+
+/* ---- Tab: Team ---- */
+function renderTeamTab(root) {
+  const title = document.createElement("h2");
+  title.className = "section-title";
+  title.innerHTML = `👥 Quản lý thành viên (${state.members.length} người)`;
+  root.appendChild(title);
+
+  const addRow = document.createElement("div");
+  addRow.className = "add-member-row";
+  addRow.innerHTML = `
+    <input type="text" id="newMemberName" placeholder="Tên thành viên mới...">
+    <button class="btn-primary" id="addMemberBtn">+ Thêm</button>
+  `;
+  root.appendChild(addRow);
+
+  const list = document.createElement("div");
+  state.members.forEach((m, idx) => {
+    const row = document.createElement("div");
+    row.className = "member-row";
+    row.innerHTML = `
+      <div class="member-num">${idx + 1}</div>
+      <input type="text" class="member-name-input" value="${escapeHtml(m.name)}" data-id="${m.id}" placeholder="Tên thành viên">
+      <div class="member-actions">
+        <button class="icon-btn" data-edit="${m.id}" title="Chỉnh sửa tên">✏️</button>
+        <button class="icon-btn danger" data-del="${m.id}" title="Xóa thành viên">🗑️</button>
+      </div>
+    `;
+    list.appendChild(row);
+  });
+  root.appendChild(list);
+
+  const nameInput = addRow.querySelector("#newMemberName");
+  const addBtn = addRow.querySelector("#addMemberBtn");
+  const addNew = () => {
+    try {
+      const name = nameInput.value.trim();
+      if (!name) { nameInput.focus(); return; }
+      const newId = (state.members.reduce((mx, m) => Math.max(mx, m.id), 0) || 0) + 1;
+      state.members.push({ id: newId, name });
+      // Tự động thêm người mới vào attendees của các ngày đã tạo trong tất cả tuần
+      Object.values(state.weeks || {}).forEach(w => {
+        if (!w || !w.days) return;
+        Object.values(w.days).forEach(d => {
+          if (!d) return;
+          if (!Array.isArray(d.attendees)) d.attendees = [];
+          if (!d.attendees.includes(newId)) d.attendees.push(newId);
+        });
+      });
+      nameInput.value = "";
+      saveNow();
+      render();
+    } catch (err) {
+      console.error("Add member failed:", err);
+      alert("Không thể thêm thành viên: " + err.message);
+    }
+  };
+  addBtn.addEventListener("click", (e) => { e.preventDefault(); addNew(); });
+  nameInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); addNew(); }
+  });
+
+  // Chỉnh sửa tên: trigger khi blur (event "change") -> cập nhật state và render lại
+  list.querySelectorAll(".member-name-input").forEach(inp => {
+    inp.addEventListener("change", () => {
+      const id = parseInt(inp.dataset.id);
+      const m = state.members.find(x => x.id === id);
+      if (!m) return;
+      const newName = inp.value.trim();
+      if (!newName) {
+        inp.value = m.name; // khôi phục nếu để trống
+        return;
+      }
+      if (m.name !== newName) {
+        m.name = newName;
+        saveNow();
+        render(); // cập nhật các tab khác (Chi phí chips, Tổng hợp, Phân việc, Quỹ)
+      }
+    });
+    // Nhấn Enter để lưu
+    inp.addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); inp.blur(); }
+      if (e.key === "Escape") {
+        const id = parseInt(inp.dataset.id);
+        const m = state.members.find(x => x.id === id);
+        if (m) inp.value = m.name;
+        inp.blur();
+      }
+    });
+  });
+
+  // Nút bút chì: focus vào ô tên để chỉnh sửa
+  list.querySelectorAll("[data-edit]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = parseInt(btn.dataset.edit);
+      const inp = list.querySelector(`.member-name-input[data-id="${id}"]`);
+      if (inp) {
+        inp.focus();
+        inp.select();
+      }
+    });
+  });
+
+  // Nút thùng rác: xóa thành viên
+  list.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = parseInt(btn.dataset.del);
+      const m = state.members.find(x => x.id === id);
+      if (!m) return;
+      if (state.members.length <= 1) {
+        alert("Phải có ít nhất 1 thành viên trong team.");
+        return;
+      }
+      if (!confirm(`Xóa thành viên "${m.name}"?\nTất cả dữ liệu liên quan đến người này sẽ bị xóa khỏi các tuần đã lưu.`)) return;
+      state.members = state.members.filter(x => x.id !== id);
+      Object.values(state.weeks).forEach(w => {
+        Object.values(w.days).forEach(d => {
+          d.attendees = d.attendees.filter(x => x !== id);
+        });
+        Object.values(w.assignments).forEach(a => {
+          Object.keys(a).forEach(k => { if (a[k] === id) a[k] = null; });
+        });
+        if (Array.isArray(w.contributors)) {
+          w.contributors = w.contributors.filter(x => x !== id);
+        }
+      });
+      saveNow();
+      render();
+    });
+  });
+}
+
+/* --- Init --- */
+(async () => {
+  try { await load(); } catch (e) { console.warn("Load failed", e); }
+  if (!state.currentWeekStart) {
+    state.currentWeekStart = addDays(getMondayOf(new Date()), 7);
+    state.activeDay = defaultDayIndex();
+  }
+  initDatePicker();
+  render();
+  // Nếu chưa có identity và có members → hỏi ngay để claim được
+  if (!state.currentMemberId && state.members.length > 0) {
+    openUserModal(true);
+  }
+  startAutoRefresh();
+})();
+</script>
+</body>
+</html>
