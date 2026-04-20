@@ -122,7 +122,7 @@
         "2026-04-23": {
           "main": null,
           "soup": null,
-          "fruit": null,
+          "fruit": 2,
           "rice": 3
         }
       },
