@@ -646,6 +646,47 @@
   }
   .task-release-btn:hover { background: #fef2f2; border-color: var(--danger); }
 
+  /* Thống kê số lần nhận việc */
+  .task-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+    padding: 16px;
+  }
+  .task-stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #f9fafb;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .task-stat-row.me {
+    background: var(--primary-soft);
+    border-color: var(--primary);
+  }
+  .task-stat-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 14px;
+  }
+  .task-stat-row.me .task-stat-name { color: var(--primary); }
+  .task-stat-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    background: #fff;
+    border: 1px solid var(--primary);
+    border-radius: 999px;
+    padding: 4px 12px;
+    white-space: nowrap;
+  }
+  .task-stat-count.zero {
+    color: var(--text-light);
+    border-color: var(--border);
+  }
+
   /* Identity pill on Task tab */
   .identity-pill {
     display: inline-flex;
@@ -1234,7 +1275,7 @@ async function doDiscardClick() {
   _loaded = false;
   await load();
   if (!state.currentWeekStart) {
-    state.currentWeekStart = addDays(getMondayOf(new Date()), 7);
+    state.currentWeekStart = getMondayOf(new Date());
     state.activeDay = defaultDayIndex();
   }
   document.getElementById("saveBar").classList.remove("show");
@@ -1694,6 +1735,42 @@ function renderTasksTab(root) {
       };
     });
   });
+
+  // Thống kê số lần nhận việc của từng người trong tuần này
+  const counts = new Map();
+  state.members.forEach(m => counts.set(m.id, 0));
+  for (let i = 0; i < WEEKDAYS; i++) {
+    const assn = getAssignments(i);
+    tasks.forEach(task => {
+      const mid = assn[task.key];
+      if (mid !== null && mid !== undefined && counts.has(mid)) {
+        counts.set(mid, counts.get(mid) + 1);
+      }
+    });
+  }
+  const ranked = state.members
+    .map(m => ({ id: m.id, name: m.name, count: counts.get(m.id) || 0 }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "vi"));
+
+  const statsTitle = document.createElement("h2");
+  statsTitle.className = "section-title";
+  statsTitle.innerHTML = "📊 Thống kê số lần nhận việc trong tuần";
+  root.appendChild(statsTitle);
+
+  const statsCard = document.createElement("div");
+  statsCard.className = "card flush";
+  let statsHtml = '<div class="task-stats-grid">';
+  ranked.forEach(m => {
+    const isMe = me && m.id === me.id;
+    const nameLabel = isMe ? `${escapeHtml(m.name)} (bạn)` : escapeHtml(m.name);
+    statsHtml += `<div class="task-stat-row${isMe ? ' me' : ''}">
+      <span class="task-stat-name">${nameLabel}</span>
+      <span class="task-stat-count${m.count === 0 ? ' zero' : ''}">${m.count} lần</span>
+    </div>`;
+  });
+  statsHtml += '</div>';
+  statsCard.innerHTML = statsHtml;
+  root.appendChild(statsCard);
 }
 
 /* ---- Tab: Quỹ ---- */
@@ -2044,7 +2121,7 @@ function renderTeamTab(root) {
 (async () => {
   try { await load(); } catch (e) { console.warn("Load failed", e); }
   if (!state.currentWeekStart) {
-    state.currentWeekStart = addDays(getMondayOf(new Date()), 7);
+    state.currentWeekStart = getMondayOf(new Date());
     state.activeDay = defaultDayIndex();
   }
   initDatePicker();
