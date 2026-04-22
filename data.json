@@ -203,7 +203,8 @@
           "main": 7,
           "soup": 5,
           "fruit": 2,
-          "rice": 3
+          "rice": 3,
+          "washMain": 11
         }
       },
       "qrImage": null,
