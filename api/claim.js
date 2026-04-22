@@ -11,6 +11,8 @@ const TASK_LABELS = {
   soup: "Canh",
   fruit: "Trái cây",
   rice: "Cơm",
+  washMain: "Main Rửa bát",
+  washSub: "Sub Rửa bát",
 };
 const VALID_TASKS = new Set(Object.keys(TASK_LABELS));
 
@@ -39,7 +41,7 @@ function ensureWeek(d, weekKey) {
 
 function ensureDayAssignment(w, dayKey) {
   if (!w.assignments[dayKey]) {
-    w.assignments[dayKey] = { main: null, soup: null, fruit: null, rice: null };
+    w.assignments[dayKey] = { main: null, soup: null, fruit: null, rice: null, washMain: null, washSub: null };
   }
   return w.assignments[dayKey];
 }

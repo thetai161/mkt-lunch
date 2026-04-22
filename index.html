@@ -1180,7 +1180,7 @@ function getAssignments(dayIndex) {
   const w = getOrCreateWeek();
   const date = addDays(state.currentWeekStart, dayIndex);
   const dk = dateKey(date);
-  if (!w.assignments[dk]) w.assignments[dk] = { main: null, soup: null, fruit: null, rice: null };
+  if (!w.assignments[dk]) w.assignments[dk] = { main: null, soup: null, fruit: null, rice: null, washMain: null, washSub: null };
   return w.assignments[dk];
 }
 function dayTotal(day) {
@@ -1679,10 +1679,12 @@ function renderTasksTab(root) {
   card.className = "card flush";
 
   const tasks = [
-    { key: "main",  label: "🍲 Nấu món chính" },
-    { key: "soup",  label: "🥣 Nấu canh" },
-    { key: "fruit", label: "🍎 Mua hoa quả" },
-    { key: "rice",  label: "🍚 Nấu cơm" },
+    { key: "main",     label: "🍲 Nấu món chính" },
+    { key: "soup",     label: "🥣 Nấu canh" },
+    { key: "fruit",    label: "🍎 Mua hoa quả" },
+    { key: "rice",     label: "🍚 Nấu cơm" },
+    { key: "washMain", label: "🧽 Main Rửa bát" },
+    { key: "washSub",  label: "🧼 Sub Rửa bát" },
   ];
 
   const weekKey = currentWeekKey();
