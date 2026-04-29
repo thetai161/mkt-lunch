@@ -260,7 +260,7 @@
         "2026-05-07": {
           "main": null,
           "soup": null,
-          "fruit": null,
+          "fruit": 6,
           "rice": null,
           "washMain": 7,
           "washSub": null
