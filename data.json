@@ -245,7 +245,7 @@
           "main": 5,
           "soup": 7,
           "fruit": null,
-          "rice": null,
+          "rice": 9,
           "washMain": null,
           "washSub": null
         },
