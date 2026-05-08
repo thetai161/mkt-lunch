@@ -426,7 +426,9 @@
         }
       },
       "qrImage": null,
-      "contributors": [],
+      "contributors": [
+        1
+      ],
       "rolloverOverride": null
     }
   },
