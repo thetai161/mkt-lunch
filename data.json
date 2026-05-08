@@ -395,6 +395,14 @@
           "rice": null,
           "washMain": null,
           "washSub": null
+        },
+        "2026-05-12": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": null,
+          "washMain": null,
+          "washSub": 3
         }
       },
       "qrImage": null,
