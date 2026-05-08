@@ -427,7 +427,8 @@
       },
       "qrImage": null,
       "contributors": [
-        1
+        1,
+        2
       ],
       "rolloverOverride": null
     }
