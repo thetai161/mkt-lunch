@@ -368,6 +368,22 @@
         6
       ],
       "rolloverOverride": 237000
+    },
+    "2026-05-11": {
+      "days": {},
+      "assignments": {
+        "2026-05-13": {
+          "main": 2,
+          "soup": null,
+          "fruit": null,
+          "rice": null,
+          "washMain": null,
+          "washSub": null
+        }
+      },
+      "qrImage": null,
+      "contributors": [],
+      "rolloverOverride": null
     }
   },
   "startWeekKey": "2026-04-27"
