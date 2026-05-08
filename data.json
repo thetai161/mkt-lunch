@@ -408,7 +408,7 @@
         },
         "2026-05-11": {
           "main": 3,
-          "soup": 1,
+          "soup": null,
           "fruit": 6,
           "rice": null,
           "washMain": 7,
