@@ -569,7 +569,7 @@
         "2026-05-20": {
           "main": 3,
           "soup": null,
-          "fruit": null,
+          "fruit": 2,
           "rice": null,
           "washMain": 5,
           "washSub": null
