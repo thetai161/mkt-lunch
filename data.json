@@ -553,7 +553,7 @@
         "2026-05-18": {
           "main": 5,
           "soup": 6,
-          "fruit": null,
+          "fruit": 1,
           "rice": 3,
           "washMain": 10,
           "washSub": 7
