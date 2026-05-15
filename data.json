@@ -552,7 +552,7 @@
       "assignments": {
         "2026-05-18": {
           "main": 5,
-          "soup": null,
+          "soup": 6,
           "fruit": null,
           "rice": 3,
           "washMain": 10,
