@@ -588,7 +588,7 @@
           "fruit": 2,
           "rice": 3,
           "washMain": null,
-          "washSub": 10
+          "washSub": null
         }
       },
       "qrImage": null,
