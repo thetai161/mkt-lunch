@@ -551,7 +551,7 @@
       },
       "assignments": {
         "2026-05-18": {
-          "main": 5,
+          "main": null,
           "soup": 6,
           "fruit": 1,
           "rice": 3,
