@@ -859,7 +859,9 @@
         }
       },
       "qrImage": null,
-      "contributors": [],
+      "contributors": [
+        3
+      ],
       "rolloverOverride": null
     }
   },
