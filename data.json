@@ -683,7 +683,7 @@
           "main": 150000,
           "soup": 15000,
           "fruit": 0,
-          "rice": 0,
+          "rice": 30000,
           "attendees": [
             1,
             2,
@@ -699,9 +699,9 @@
         },
         "2026-05-25": {
           "main": 0,
-          "soup": 0,
+          "soup": 40000,
           "fruit": 0,
-          "rice": 30000,
+          "rice": 0,
           "attendees": [
             1,
             2,
@@ -754,7 +754,7 @@
           "main": 0,
           "soup": 17000,
           "fruit": 0,
-          "rice": 0,
+          "rice": 30000,
           "attendees": [
             1,
             2,
