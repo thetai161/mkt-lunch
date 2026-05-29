@@ -828,7 +828,7 @@
           "fruit": null,
           "rice": null,
           "washMain": null,
-          "washSub": null
+          "washSub": 1
         },
         "2026-06-02": {
           "main": 5,
