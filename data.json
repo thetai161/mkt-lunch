@@ -825,7 +825,7 @@
           "washSub": null
         },
         "2026-06-02": {
-          "main": null,
+          "main": 1,
           "soup": 6,
           "fruit": 10,
           "rice": null,
