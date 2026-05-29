@@ -811,7 +811,9 @@
         }
       },
       "qrImage": null,
-      "contributors": [],
+      "contributors": [
+        3
+      ],
       "rolloverOverride": null
     },
     "2026-06-01": {
