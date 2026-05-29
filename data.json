@@ -819,7 +819,7 @@
         "2026-06-03": {
           "main": null,
           "soup": null,
-          "fruit": null,
+          "fruit": 10,
           "rice": null,
           "washMain": null,
           "washSub": 6
