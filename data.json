@@ -1015,6 +1015,16 @@
       "qrImage": null,
       "contributors": [],
       "rolloverOverride": null
+    },
+    "2026-06-15": {
+      "days": {},
+      "assignments": {},
+      "qrImage": null,
+      "contributors": [
+        2,
+        10
+      ],
+      "rolloverOverride": null
     }
   },
   "startWeekKey": "2026-04-27"
