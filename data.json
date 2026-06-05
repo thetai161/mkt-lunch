@@ -993,7 +993,7 @@
           "fruit": null,
           "rice": null,
           "washMain": null,
-          "washSub": null
+          "washSub": 10
         },
         "2026-06-10": {
           "main": null,
