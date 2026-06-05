@@ -978,6 +978,14 @@
           "rice": null,
           "washMain": null,
           "washSub": null
+        },
+        "2026-06-11": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": null,
+          "washMain": 5,
+          "washSub": null
         }
       },
       "qrImage": null,
