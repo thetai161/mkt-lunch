@@ -1005,7 +1005,7 @@
           "soup": 2,
           "fruit": 10,
           "rice": 1,
-          "washMain": null,
+          "washMain": 9,
           "washSub": 10
         }
       },
