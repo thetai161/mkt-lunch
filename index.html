@@ -1219,15 +1219,15 @@ function computeSettlement() {
 
   for (let i = 0; i < WEEKDAYS; i++) {
     const day = getDayData(i);
-    const n = (day.attendees || []).length;
+    // Bỏ id của thành viên đã rời team để mẫu số chia phần ăn không bị thổi phồng
+    const attendees = (day.attendees || []).filter(id => eaten.has(id));
+    const n = attendees.length;
     if (n === 0) continue;
 
     const total = dayTotal(day);
     totalSpent += total;
     const share = total / n;
-    day.attendees.forEach(id => {
-      if (eaten.has(id)) eaten.set(id, eaten.get(id) + share);
-    });
+    attendees.forEach(id => eaten.set(id, eaten.get(id) + share));
 
     const assn = getAssignments(i);
     COST_TASKS.forEach(task => {
@@ -1255,7 +1255,7 @@ function computeSettlement() {
   rows.forEach(r => {
     if (r.id === treasurerId) return; // thủ quỹ tự cấn trừ, không chuyển cho chính mình
     if (r.net < 0) toTreasurer += -r.net;
-    else fromTreasurer += r.net;
+    else if (r.net > 0) fromTreasurer += r.net;
   });
 
   return { rows, unattributed, totalSpent, toTreasurer, fromTreasurer, treasurerId };
