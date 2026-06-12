@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "members": [
     {
       "id": 1,
@@ -1099,7 +1099,9 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": 0
+      "rolloverOverride": 0,
+      "treasurerId": 9,
+      "settledIds": []
     },
     "2026-06-15": {
       "days": {},
@@ -1150,7 +1152,9 @@
         2,
         10
       ],
-      "rolloverOverride": null
+      "rolloverOverride": null,
+      "treasurerId": null,
+      "settledIds": []
     }
   },
   "startWeekKey": "2026-04-27"
