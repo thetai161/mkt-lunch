@@ -1099,7 +1099,7 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": null
+      "rolloverOverride": 0
     },
     "2026-06-15": {
       "days": {},
