@@ -433,6 +433,13 @@
     accent-color: var(--primary);
     cursor: pointer;
   }
+  .payer-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    min-height: 14px;
+  }
+  .payer-hint.warn { color: #dc2626; }
   .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -1503,20 +1510,24 @@ function renderCostTab(root) {
       <div class="input-group">
         <label>🍲 Món chính</label>
         <input type="number" min="0" step="1000" value="${day.main || 0}" data-field="main" placeholder="0">
+        <div class="payer-hint" data-task="main"></div>
       </div>
       <div class="input-group">
         <label>🥣 Canh</label>
         <input type="number" min="0" step="1000" value="${day.soup || 0}" data-field="soup" placeholder="0">
+        <div class="payer-hint" data-task="soup"></div>
       </div>
       <div class="input-group">
         <label>🍊 Hoa quả</label>
         <input type="number" min="0" step="1000" value="${day.fruit || 0}" data-field="fruit" placeholder="0">
+        <div class="payer-hint" data-task="fruit"></div>
       </div>
     </div>
     <div class="inputs-row" style="margin-top:0">
       <div class="input-group">
         <label>🍚 Tiền cơm</label>
         <input type="number" min="0" step="1000" value="${day.rice || 0}" data-field="rice" placeholder="0">
+        <div class="payer-hint" data-task="rice"></div>
       </div>
     </div>
     <div class="attendees">
@@ -1539,10 +1550,31 @@ function renderCostTab(root) {
   };
   updateTotals();
 
+  // Người chi của từng khoản = người nhận việc tương ứng ở tab Phân việc
+  const assn = getAssignments(dayIdx);
+  const renderPayerHints = () => {
+    card.querySelectorAll(".payer-hint").forEach(el => {
+      const t = el.dataset.task;
+      const payer = state.members.find(m => m.id === assn[t]);
+      if (payer) {
+        el.textContent = `💳 ${payer.name}`;
+        el.classList.remove("warn");
+      } else if ((day[t] || 0) > 0) {
+        el.textContent = "⚠ chưa ai nhận việc";
+        el.classList.add("warn");
+      } else {
+        el.textContent = "";
+        el.classList.remove("warn");
+      }
+    });
+  };
+  renderPayerHints();
+
   card.querySelectorAll("input[data-field]").forEach(inp => {
     inp.addEventListener("input", () => {
       day[inp.dataset.field] = parseFloat(inp.value) || 0;
       updateTotals();
+      renderPayerHints();
       save();
     });
   });
