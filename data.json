@@ -1103,7 +1103,16 @@
     },
     "2026-06-15": {
       "days": {},
-      "assignments": {},
+      "assignments": {
+        "2026-06-15": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": null,
+          "washMain": 4,
+          "washSub": null
+        }
+      },
       "qrImage": null,
       "contributors": [
         2,
