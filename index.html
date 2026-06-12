@@ -360,7 +360,7 @@
     gap: 12px;
     margin-bottom: 16px;
   }
-  .rollover-row {
+  .treasurer-row {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -372,19 +372,19 @@
     gap: 12px;
     flex-wrap: wrap;
   }
-  .rollover-row .rollover-label {
+  .treasurer-row .treasurer-label {
     font-size: 13px;
     color: var(--text-muted);
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  .rollover-row .rollover-label .main-label {
+  .treasurer-row .treasurer-label .main-label {
     font-weight: 600;
     color: var(--text);
     font-size: 14px;
   }
-  .rollover-row input[type="number"] {
+  .treasurer-row select {
     padding: 10px 14px;
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -393,106 +393,45 @@
     font-weight: 600;
     font-family: inherit;
     color: var(--primary);
-    width: 180px;
-    text-align: right;
+    min-width: 180px;
+    cursor: pointer;
   }
-  .rollover-row input[type="number"]:focus {
+  .treasurer-row select:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(234,88,12,0.12);
   }
-  .contributors-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 20px;
+  .settle-warning {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    padding: 14px 18px;
     margin-bottom: 16px;
-    box-shadow: 0 2px 8px rgba(234,88,12,0.06);
-  }
-  .contributors-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .contributors-summary {
-    display: flex;
-    gap: 18px;
     font-size: 13px;
-    color: var(--text-muted);
+    color: #991b1b;
   }
-  .contributors-summary strong { color: var(--primary); font-size: 14px; }
-  .contributors-actions { display: flex; gap: 8px; }
-  .contributors-actions button {
-    padding: 6px 12px;
-    font-size: 12px;
-    border: 1px solid var(--border);
-    background: #fff;
-    color: var(--text-muted);
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: inherit;
-  }
-  .contributors-actions button:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-  .contributors-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  .contributor-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: #fff;
-    cursor: pointer;
-    user-select: none;
-    transition: all .15s;
-  }
-  .contributor-row:hover { border-color: var(--border-strong); }
-  .contributor-row.paid {
-    background: var(--success-bg);
-    border-color: #bbf7d0;
-  }
-  .contributor-row .num {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--primary-soft);
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  .contributor-row.paid .num {
-    background: #dcfce7;
-    color: var(--success);
-  }
-  .contributor-row .c-name { flex: 1; font-size: 14px; font-weight: 500; }
-  .contributor-row .c-status {
+  .settle-warning ul { margin: 8px 0 0 18px; padding: 0; }
+  .settle-warning li { margin-top: 4px; }
+  .settle-badge {
+    display: inline-block;
     font-size: 12px;
     font-weight: 600;
     padding: 4px 10px;
     border-radius: 999px;
-    background: #f3f4f6;
-    color: var(--text-muted);
+    white-space: nowrap;
   }
-  .contributor-row.paid .c-status {
-    background: var(--success);
-    color: #fff;
-  }
-  @media (max-width: 640px) {
-    .contributors-list { grid-template-columns: 1fr; }
+  .settle-badge.owe { background: #fef2f2; color: #dc2626; }
+  .settle-badge.receive { background: var(--success-bg); color: var(--success); }
+  .settle-badge.even { background: #f3f4f6; color: var(--text-muted); }
+  .settle-badge.treasurer { background: var(--primary-soft); color: var(--primary); }
+  .settle-badge.muted { background: #f3f4f6; color: #9ca3af; font-weight: 500; }
+  .settle-pos { color: var(--success); font-weight: 600; }
+  .settle-neg { color: #dc2626; font-weight: 600; }
+  .settle-check {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
   }
   .stat-card {
     background: var(--card);
@@ -1012,7 +951,7 @@
   <div class="tab active" data-tab="cost" onclick="setTab('cost')"><span>💎</span> Chi phí</div>
   <div class="tab" data-tab="summary" onclick="setTab('summary')"><span>📊</span> Tổng hợp</div>
   <div class="tab" data-tab="tasks" onclick="setTab('tasks')"><span>📋</span> Phân việc</div>
-  <div class="tab" data-tab="fund" onclick="setTab('fund')"><span>💰</span> Quỹ</div>
+  <div class="tab" data-tab="fund" onclick="setTab('fund')"><span>💸</span> Quyết toán</div>
   <div class="tab" data-tab="team" onclick="setTab('team')"><span>👥</span> Team</div>
 </div>
 
@@ -1021,7 +960,6 @@
 <script>
 /* --- Constants --- */
 const RICE_PRICE = 0;
-const FUND_PER_PERSON = 150000;
 const WEEKDAYS = 5;
 const DAY_NAMES = ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6"];
 
@@ -1091,69 +1029,7 @@ function getOrCreateWeek() {
   return w;
 }
 
-/**
- * Số dư cuối tuần = quỹ tuần - tổng chi tuần
- * quỹ tuần = tổng tiền đóng tuần đó + dư tuần trước
- * Hàm này đệ quy tính dư tuần trước từ lịch sử.
- */
-function computeWeekEndingBalance(weekStart, depth) {
-  if (depth > 104) return 0; // giới hạn an toàn: tối đa 2 năm
-  const k = dateKey(weekStart);
-  // Trước mốc bắt đầu tracking → không có dữ liệu, số dư = 0
-  if (state.startWeekKey && k < state.startWeekKey) return 0;
-  const w = state.weeks[k];
-  if (!w) return 0;
 
-  const contributed = (w.contributors || []).length * FUND_PER_PERSON;
-  const rollover = getWeekRollover(weekStart, depth + 1);
-  const fund = contributed + rollover;
-
-  // Đếm đủ 5 ngày trong tuần, ngày chưa có data thì dùng default giống tab Chi phí
-  // (để khớp với cách calcWeekTotalSpent hiển thị Tổng chi tuần).
-  let spent = 0;
-  for (let i = 0; i < WEEKDAYS; i++) {
-    const date = addDays(weekStart, i);
-    const dk = dateKey(date);
-    const day = (w.days && w.days[dk]) || {
-      main: 0, soup: 0, fruit: 0, rice: RICE_PRICE,
-      attendees: state.members.map(m => m.id)
-    };
-    if ((day.attendees || []).length > 0) {
-      spent += (day.main || 0) + (day.soup || 0) + (day.fruit || 0) + (day.rice || 0);
-    }
-  }
-  return fund - spent;
-}
-
-/**
- * Dư tuần trước để đưa vào tuần hiện tại.
- * Nếu tuần này có override do user đặt thủ công thì dùng override.
- * Nếu không thì tự động = số dư cuối của tuần trước.
- */
-function getWeekRollover(weekStart, depth = 0) {
-  const k = dateKey(weekStart);
-  const w = state.weeks[k];
-  if (w && w.rolloverOverride !== null && w.rolloverOverride !== undefined) {
-    return w.rolloverOverride;
-  }
-  // Nếu đây là tuần đầu tiên (hoặc trước mốc bắt đầu) thì không có tuần trước để rollover
-  if (state.startWeekKey && k <= state.startWeekKey) return 0;
-  const prevStart = addDays(weekStart, -7);
-  return computeWeekEndingBalance(prevStart, depth);
-}
-
-function isRolloverManual() {
-  const w = state.weeks[currentWeekKey()];
-  return !!(w && w.rolloverOverride !== null && w.rolloverOverride !== undefined);
-}
-function setWeekRolloverOverride(value) {
-  const w = getOrCreateWeek();
-  w.rolloverOverride = value;
-}
-function clearWeekRolloverOverride() {
-  const w = getOrCreateWeek();
-  w.rolloverOverride = null;
-}
 function getOrCreateDay(dayIndex) {
   const w = getOrCreateWeek();
   const date = addDays(state.currentWeekStart, dayIndex);
@@ -1849,135 +1725,104 @@ function renderTasksTab(root) {
   root.appendChild(statsCard);
 }
 
-/* ---- Tab: Quỹ ---- */
+/* ---- Tab: Quyết toán ---- */
 function renderFundTab(root) {
   const title = document.createElement("h2");
   title.className = "section-title";
-  title.innerHTML = "💼 Quản lý quỹ";
+  title.innerHTML = "💸 Quyết toán cuối tuần";
   root.appendChild(title);
 
   const week = getOrCreateWeek();
-  const contributors = week.contributors || [];
-  const contributedThisWeek = contributors.length * FUND_PER_PERSON;
-  const rollover = getWeekRollover(state.currentWeekStart);
-  const manual = isRolloverManual();
+  const s = computeSettlement();
 
-  // Rollover editor
-  const rolloverBox = document.createElement("div");
-  rolloverBox.className = "rollover-row";
-  const prevStart = addDays(state.currentWeekStart, -7);
-  const prevEnd = addDays(prevStart, WEEKDAYS - 1);
-  const prevRange = `${formatDM(prevStart)} - ${formatDM(prevEnd)}`;
-  rolloverBox.innerHTML = `
-    <div class="rollover-label">
-      <span style="font-size:18px">📦</span>
-      <div>
-        <div class="main-label">Dư tuần trước ${manual ? '<span style="color:#ea580c;font-size:11px;font-weight:600;background:#fff1e7;padding:2px 8px;border-radius:999px;margin-left:6px">Thủ công</span>' : '<span style="color:#16a34a;font-size:11px;font-weight:600;background:#dcfce7;padding:2px 8px;border-radius:999px;margin-left:6px">Tự động</span>'}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:2px">Tuần ${prevRange} · có thể âm hoặc dương${manual ? "" : " · tự tính từ tuần trước"}</div>
-      </div>
+  // 1. Chọn thủ quỹ
+  const trBox = document.createElement("div");
+  trBox.className = "treasurer-row";
+  const inherited = !week.treasurerId && s.treasurerId; // đang kế thừa từ tuần trước
+  const opts = ['<option value="">— Chưa chọn —</option>']
+    .concat(state.members.map(m =>
+      `<option value="${m.id}"${m.id === s.treasurerId ? " selected" : ""}>${escapeHtml(m.name)}</option>`))
+    .join("");
+  trBox.innerHTML = `
+    <div class="treasurer-label">
+      <span class="main-label">🏦 Thủ quỹ</span>
+      <span>nhận tiền qua QR rồi chia lại${inherited ? " · theo tuần trước" : ""}</span>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <input type="number" step="1000" id="rolloverInput" value="${rollover}" placeholder="0">
-      ${manual ? '<button id="resetRollover" class="contributors-actions-btn" style="padding:10px 14px;font-size:12px;border:1px solid #f5e6d3;background:#fff;color:#6b7280;border-radius:10px;cursor:pointer;font-family:inherit">↺ Tự động</button>' : ''}
-    </div>
+    <select id="treasurerSelect">${opts}</select>
   `;
-  root.appendChild(rolloverBox);
-
-  const rolloverInput = rolloverBox.querySelector("#rolloverInput");
-  rolloverInput.addEventListener("input", (e) => {
-    const v = parseFloat(e.target.value);
-    setWeekRolloverOverride(isNaN(v) ? 0 : v);
+  root.appendChild(trBox);
+  trBox.querySelector("#treasurerSelect").addEventListener("change", (e) => {
+    const v = parseInt(e.target.value);
+    week.treasurerId = isNaN(v) ? null : v;
     save();
-    updateFundStats(); // cập nhật card real-time khi đang gõ
+    render();
   });
-  rolloverInput.addEventListener("change", () => {
-    render(); // rerender đầy đủ khi blur để cập nhật badge "Thủ công" và nút reset
-  });
-  const resetBtn = rolloverBox.querySelector("#resetRollover");
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      clearWeekRolloverOverride();
-      save();
-      render();
-    });
-  }
 
-  // Stats grid
+  // 2. Thẻ thống kê
   const grid = document.createElement("div");
   grid.className = "stats-grid";
   grid.id = "fundStatsGrid";
   root.appendChild(grid);
   renderFundStatsInto(grid);
 
-  // Contributors management
-  const contribCard = document.createElement("div");
-  contribCard.className = "contributors-card";
-  contribCard.innerHTML = `
-    <div class="contributors-head">
-      <h2 class="section-title" style="margin:0">👛 Người đóng tiền tuần này</h2>
-      <div class="contributors-actions">
-        <button id="markAllPaid">Tất cả đã đóng</button>
-        <button id="markAllUnpaid">Bỏ chọn tất cả</button>
-      </div>
-    </div>
-    <div class="contributors-summary">
-      <div>Đã đóng: <strong id="paidCount">${contributors.length}/${state.members.length}</strong></div>
-      <div>Tổng thu: <strong id="paidTotal">${fmt(contributedThisWeek)}</strong></div>
-    </div>
-    <div class="contributors-list" id="contributorsList"></div>
-  `;
-  root.appendChild(contribCard);
+  // 3. Cảnh báo khoản chưa rõ người chi
+  if (s.unattributed.length > 0) {
+    const warn = document.createElement("div");
+    warn.className = "settle-warning";
+    const items = s.unattributed.map(u => {
+      const d = addDays(state.currentWeekStart, u.dayIndex);
+      return `<li>${DAY_NAMES[u.dayIndex]} ${formatDM(d)} — ${COST_TASK_LABELS[u.task]} ${fmt(u.amount)}</li>`;
+    }).join("");
+    warn.innerHTML = `<strong>⚠ Có khoản chi chưa rõ người chi</strong>
+      <div>Vào tab Phân việc để nhận các việc sau, nếu không bảng quyết toán sẽ không cân:</div>
+      <ul>${items}</ul>`;
+    root.appendChild(warn);
+  }
 
-  const listEl = contribCard.querySelector("#contributorsList");
-  const renderContribList = () => {
-    listEl.innerHTML = "";
-    state.members.forEach((m, idx) => {
-      const paid = (week.contributors || []).includes(m.id);
-      const row = document.createElement("div");
-      row.className = "contributor-row" + (paid ? " paid" : "");
-      row.innerHTML = `
-        <div class="num">${idx + 1}</div>
-        <div class="c-name">${escapeHtml(m.name)}</div>
-        <div class="c-status">${paid ? "✓ Đã đóng" : "Chưa đóng"}</div>
-      `;
-      row.onclick = () => {
-        if (!Array.isArray(week.contributors)) week.contributors = [];
-        if (week.contributors.includes(m.id)) {
-          week.contributors = week.contributors.filter(id => id !== m.id);
-        } else {
-          week.contributors.push(m.id);
-        }
-        save();
-        renderContribList();
-        updateContribSummary();
-        updateFundStats();
-      };
-      listEl.appendChild(row);
+  // 4. Bảng quyết toán
+  const card = document.createElement("div");
+  card.className = "card flush";
+  let html = '<table class="summary"><thead><tr><th>Thành viên</th><th>Đã chi</th><th>Đã ăn</th><th>Chênh lệch</th><th>Hành động</th><th>Xong</th></tr></thead><tbody>';
+  s.rows.forEach(r => {
+    let action;
+    if (r.id === s.treasurerId) {
+      action = '<span class="settle-badge treasurer">🏦 Thủ quỹ</span>';
+    } else if (!s.treasurerId) {
+      action = '<span class="settle-badge muted">chọn thủ quỹ trước</span>';
+    } else if (r.net < -0.5) {
+      action = `<span class="settle-badge owe">Chuyển ${fmt(-r.net)} → thủ quỹ</span>`;
+    } else if (r.net > 0.5) {
+      action = `<span class="settle-badge receive">Nhận ${fmt(r.net)} ← thủ quỹ</span>`;
+    } else {
+      action = '<span class="settle-badge even">✓ Cân bằng</span>';
+    }
+    const checked = week.settledIds.includes(r.id) ? " checked" : "";
+    html += `<tr>
+      <td>${escapeHtml(r.name)}</td>
+      <td>${fmt(r.paid)}</td>
+      <td>${fmt(r.eaten)}</td>
+      <td class="${r.net >= 0 ? "settle-pos" : "settle-neg"}">${r.net > 0 ? "+" : ""}${fmt(r.net)}</td>
+      <td>${action}</td>
+      <td><input type="checkbox" class="settle-check" data-mid="${r.id}"${checked}></td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  card.innerHTML = html;
+  root.appendChild(card);
+
+  card.querySelectorAll(".settle-check").forEach(cb => {
+    cb.addEventListener("change", () => {
+      const mid = parseInt(cb.dataset.mid);
+      if (cb.checked) {
+        if (!week.settledIds.includes(mid)) week.settledIds.push(mid);
+      } else {
+        week.settledIds = week.settledIds.filter(id => id !== mid);
+      }
+      save();
     });
-  };
-  const updateContribSummary = () => {
-    const cnt = (week.contributors || []).length;
-    contribCard.querySelector("#paidCount").textContent = `${cnt}/${state.members.length}`;
-    contribCard.querySelector("#paidTotal").textContent = fmt(cnt * FUND_PER_PERSON);
-  };
-  renderContribList();
+  });
 
-  contribCard.querySelector("#markAllPaid").onclick = () => {
-    week.contributors = state.members.map(m => m.id);
-    save();
-    renderContribList();
-    updateContribSummary();
-    updateFundStats();
-  };
-  contribCard.querySelector("#markAllUnpaid").onclick = () => {
-    week.contributors = [];
-    save();
-    renderContribList();
-    updateContribSummary();
-    updateFundStats();
-  };
-
-  // QR upload
+  // 5. QR thủ quỹ (giữ nguyên cơ chế upload theo tuần)
   const DEFAULT_QR = "qr-default.jpg";
   const qrCard = document.createElement("div");
   qrCard.className = "card";
@@ -1994,7 +1839,6 @@ function renderFundTab(root) {
   const qrContent = qrCard.querySelector("#qrContent");
   qrContent.innerHTML = `<img src="${escapeHtml(qrSrc)}" alt="QR thủ quỹ"><div style="font-size:12px;color:#6b7280;margin-top:10px">Nhấn để đổi ảnh khác</div><button type="button" class="qr-zoom-btn" id="qrZoomBtn">🔍 Phóng to</button>`;
 
-  // Zoom modal
   qrCard.querySelector("#qrZoomBtn").addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -2006,7 +1850,7 @@ function renderFundTab(root) {
   });
 
   qrCard.querySelector("#qrInput").addEventListener("change", (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files && e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
@@ -2019,39 +1863,25 @@ function renderFundTab(root) {
 }
 
 function renderFundStatsInto(grid) {
-  const week = getOrCreateWeek();
-  const contributors = week.contributors || [];
-  const contributedThisWeek = contributors.length * FUND_PER_PERSON;
-  const rollover = getWeekRollover(state.currentWeekStart);
-  const fund = contributedThisWeek + rollover;
-  const totalSpent = calcWeekTotalSpent();
-  const balance = fund - totalSpent;
-
-  const rolloverDisplay = rollover === 0
-    ? ""
-    : `<div class="stat-sub">${rollover > 0 ? "+" : ""}${fmt(rollover)} dư tuần trước</div>`;
+  const s = computeSettlement();
   grid.innerHTML = `
-    <div class="stat-card">
-      <div class="stat-label">Quỹ tuần</div>
-      <div class="stat-value">${fmt(fund)}</div>
-      <div class="stat-sub">${contributors.length}/${state.members.length} người × ${fmt(FUND_PER_PERSON)}</div>
-      ${rolloverDisplay}
-    </div>
     <div class="stat-card neutral">
       <div class="stat-label">Tổng chi tuần</div>
-      <div class="stat-value">${fmt(totalSpent)}</div>
+      <div class="stat-value">${fmt(s.totalSpent)}</div>
     </div>
-    <div class="stat-card ${balance >= 0 ? "highlight" : "deficit"}">
-      <div class="stat-label">${balance >= 0 ? "↗ Dư cuối tuần" : "↘ Thiếu"}</div>
-      <div class="stat-value">${fmt(Math.abs(balance))}</div>
+    <div class="stat-card">
+      <div class="stat-label">Thủ quỹ thu về</div>
+      <div class="stat-value">${fmt(s.toTreasurer)}</div>
+      <div class="stat-sub">từ người ăn nhiều hơn chi</div>
+    </div>
+    <div class="stat-card highlight">
+      <div class="stat-label">Thủ quỹ chi ra</div>
+      <div class="stat-value">${fmt(s.fromTreasurer)}</div>
+      <div class="stat-sub">trả cho người chi nhiều hơn ăn</div>
     </div>
   `;
 }
 
-function updateFundStats() {
-  const grid = document.getElementById("fundStatsGrid");
-  if (grid) renderFundStatsInto(grid);
-}
 
 function calcWeekTotalSpent() {
   let total = 0;
