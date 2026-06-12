@@ -2013,8 +2013,9 @@ function renderTeamTab(root) {
         Object.values(w.assignments).forEach(a => {
           Object.keys(a).forEach(k => { if (a[k] === id) a[k] = null; });
         });
-        if (Array.isArray(w.contributors)) {
-          w.contributors = w.contributors.filter(x => x !== id);
+        if (w.treasurerId === id) w.treasurerId = null;
+        if (Array.isArray(w.settledIds)) {
+          w.settledIds = w.settledIds.filter(x => x !== id);
         }
       });
       saveNow();
