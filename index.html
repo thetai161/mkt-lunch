@@ -1081,13 +1081,13 @@ function getOrCreateWeek() {
       days: {},
       assignments: {},
       qrImage: null,
-      contributors: [], // mặc định chưa ai đóng
-      rolloverOverride: null,
+      treasurerId: null, // thủ quỹ tuần này (member id)
+      settledIds: [],    // ai đã tick "đã chuyển / đã nhận xong"
     };
   }
   const w = state.weeks[k];
-  if (!Array.isArray(w.contributors)) w.contributors = [];
-  if (w.rolloverOverride === undefined) w.rolloverOverride = null;
+  if (w.treasurerId === undefined) w.treasurerId = null;
+  if (!Array.isArray(w.settledIds)) w.settledIds = [];
   return w;
 }
 
@@ -1187,8 +1187,82 @@ function dayTotal(day) {
   return (day.main || 0) + (day.soup || 0) + (day.fruit || 0) + (day.rice || 0);
 }
 
+/* --- Quyết toán cuối tuần --- */
+// 4 việc có tiền, map 1-1 với ô nhập ở tab Chi phí. washMain/washSub không có tiền.
+const COST_TASKS = ["main", "soup", "fruit", "rice"];
+const COST_TASK_LABELS = { main: "Món chính", soup: "Canh", fruit: "Hoa quả", rice: "Cơm" };
+
+// Thủ quỹ mặc định = thủ quỹ của tuần gần nhất trước tuần hiện tại (nếu còn trong team)
+function getDefaultTreasurerId() {
+  const cur = currentWeekKey();
+  const keys = Object.keys(state.weeks).filter(k => k < cur).sort().reverse();
+  for (const k of keys) {
+    const t = state.weeks[k] && state.weeks[k].treasurerId;
+    if (t && state.members.some(m => m.id === t)) return t;
+  }
+  return null;
+}
+
+/**
+ * Quyết toán tuần hiện tại.
+ * - eaten: chia đều tổng chi ngày cho người ăn (cùng công thức tab Tổng hợp)
+ * - paid: người nhận việc nào ở tab Phân việc thì là người chi khoản đó
+ * - Ngày không có người ăn → bỏ qua hoàn toàn (cả eaten lẫn paid), khớp calcWeekTotalSpent
+ * - Khoản có tiền nhưng chưa ai nhận việc (hoặc người nhận đã rời team) → unattributed
+ */
+function computeSettlement() {
+  const week = getOrCreateWeek();
+  const paid = new Map(state.members.map(m => [m.id, 0]));
+  const eaten = new Map(state.members.map(m => [m.id, 0]));
+  const unattributed = [];
+  let totalSpent = 0;
+
+  for (let i = 0; i < WEEKDAYS; i++) {
+    const day = getDayData(i);
+    const n = (day.attendees || []).length;
+    if (n === 0) continue;
+
+    const total = dayTotal(day);
+    totalSpent += total;
+    const share = total / n;
+    day.attendees.forEach(id => {
+      if (eaten.has(id)) eaten.set(id, eaten.get(id) + share);
+    });
+
+    const assn = getAssignments(i);
+    COST_TASKS.forEach(task => {
+      const amount = day[task] || 0;
+      if (amount <= 0) return;
+      const payerId = assn[task];
+      if (payerId !== null && payerId !== undefined && paid.has(payerId)) {
+        paid.set(payerId, paid.get(payerId) + amount);
+      } else {
+        unattributed.push({ dayIndex: i, task, amount });
+      }
+    });
+  }
+
+  const rows = state.members.map(m => ({
+    id: m.id,
+    name: m.name,
+    paid: paid.get(m.id) || 0,
+    eaten: eaten.get(m.id) || 0,
+    net: (paid.get(m.id) || 0) - (eaten.get(m.id) || 0),
+  }));
+
+  const treasurerId = week.treasurerId || getDefaultTreasurerId();
+  let toTreasurer = 0, fromTreasurer = 0;
+  rows.forEach(r => {
+    if (r.id === treasurerId) return; // thủ quỹ tự cấn trừ, không chuyển cho chính mình
+    if (r.net < 0) toTreasurer += -r.net;
+    else fromTreasurer += r.net;
+  });
+
+  return { rows, unattributed, totalSpent, toTreasurer, fromTreasurer, treasurerId };
+}
+
 /* --- Persistence (API only, localStorage chỉ lưu UI state) --- */
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 const DATA_API = "/api/data";
 const UI_KEY = "teamLunchUI";
 let _saveTimer = null;
@@ -1387,7 +1461,7 @@ async function sendClaim(weekKey, dayKey, task, action) {
     const payload = await res.json().catch(() => ({}));
     if (res.ok) {
       if (payload.assignments) {
-        if (!state.weeks[weekKey]) state.weeks[weekKey] = { days:{}, assignments:{}, qrImage:null, contributors:[], rolloverOverride:null };
+        if (!state.weeks[weekKey]) state.weeks[weekKey] = { days:{}, assignments:{}, qrImage:null, treasurerId:null, settledIds:[] };
         if (!state.weeks[weekKey].assignments) state.weeks[weekKey].assignments = {};
         state.weeks[weekKey].assignments[dayKey] = payload.assignments;
       }
@@ -1397,7 +1471,7 @@ async function sendClaim(weekKey, dayKey, task, action) {
     if (res.status === 409) {
       showToast(`${payload.currentClaimerName || "Người khác"} đã nhận trước bạn`, "error");
       if (payload.assignments) {
-        if (!state.weeks[weekKey]) state.weeks[weekKey] = { days:{}, assignments:{}, qrImage:null, contributors:[], rolloverOverride:null };
+        if (!state.weeks[weekKey]) state.weeks[weekKey] = { days:{}, assignments:{}, qrImage:null, treasurerId:null, settledIds:[] };
         if (!state.weeks[weekKey].assignments) state.weeks[weekKey].assignments = {};
         state.weeks[weekKey].assignments[dayKey] = payload.assignments;
       }
