@@ -43,15 +43,15 @@ function describeDiff(oldData, newData) {
     }
     if (changedDays.length) parts.push(`costs for ${changedDays.join(", ")}`);
 
-    const oc = JSON.stringify([...(ow.contributors || [])].sort((a,b)=>a-b));
-    const nc = JSON.stringify([...(nw.contributors || [])].sort((a,b)=>a-b));
-    if (oc !== nc) parts.push("contributors");
+    const os = JSON.stringify([...(ow.settledIds || [])].sort((a,b)=>a-b));
+    const ns = JSON.stringify([...(nw.settledIds || [])].sort((a,b)=>a-b));
+    if (os !== ns) parts.push("settlement ticks");
 
-    const oro = ow.rolloverOverride === undefined ? null : ow.rolloverOverride;
-    const nro = nw.rolloverOverride === undefined ? null : nw.rolloverOverride;
-    if (oro !== nro) {
-      if (nro === null) parts.push("reset rollover");
-      else parts.push(`set rollover = ${nro}`);
+    const ot = ow.treasurerId === undefined ? null : ow.treasurerId;
+    const nt = nw.treasurerId === undefined ? null : nw.treasurerId;
+    if (ot !== nt) {
+      if (nt === null) parts.push("clear treasurer");
+      else parts.push(`set treasurer = ${nt}`);
     }
 
     if ((ow.qrImage || null) !== (nw.qrImage || null)) parts.push("QR image");

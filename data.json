@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "members": [
     { "id": 1, "name": "Thành viên 1" },
     { "id": 2, "name": "Thành viên 2" },
