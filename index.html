@@ -1126,7 +1126,9 @@ function computeSettlement() {
     net: (paid.get(m.id) || 0) - (eaten.get(m.id) || 0),
   }));
 
-  const treasurerId = week.treasurerId || getDefaultTreasurerId();
+  // treasurerId trong data có thể trỏ tới thành viên đã bị xoá từ thiết bị khác
+  const treasurerValid = week.treasurerId && state.members.some(m => m.id === week.treasurerId);
+  const treasurerId = treasurerValid ? week.treasurerId : getDefaultTreasurerId();
   let toTreasurer = 0, fromTreasurer = 0;
   rows.forEach(r => {
     if (r.id === treasurerId) return; // thủ quỹ tự cấn trừ, không chuyển cho chính mình
@@ -1746,7 +1748,7 @@ function renderFundTab(root) {
   trBox.innerHTML = `
     <div class="treasurer-label">
       <span class="main-label">🏦 Thủ quỹ</span>
-      <span>nhận tiền qua QR rồi chia lại${inherited ? " · theo tuần trước" : ""}</span>
+      <span>nhận tiền qua QR rồi chia lại${inherited ? " · kế thừa tuần cũ" : ""}</span>
     </div>
     <select id="treasurerSelect">${opts}</select>
   `;
@@ -1801,7 +1803,7 @@ function renderFundTab(root) {
       <td>${escapeHtml(r.name)}</td>
       <td>${fmt(r.paid)}</td>
       <td>${fmt(r.eaten)}</td>
-      <td class="${r.net >= 0 ? "settle-pos" : "settle-neg"}">${r.net > 0 ? "+" : ""}${fmt(r.net)}</td>
+      <td class="${r.net > 0.5 ? "settle-pos" : r.net < -0.5 ? "settle-neg" : ""}">${r.net > 0 ? "+" : ""}${fmt(r.net)}</td>
       <td>${action}</td>
       <td><input type="checkbox" class="settle-check" data-mid="${r.id}"${checked}></td>
     </tr>`;
@@ -1869,7 +1871,7 @@ function renderFundStatsInto(grid) {
       <div class="stat-label">Tổng chi tuần</div>
       <div class="stat-value">${fmt(s.totalSpent)}</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card neutral">
       <div class="stat-label">Thủ quỹ thu về</div>
       <div class="stat-value">${fmt(s.toTreasurer)}</div>
       <div class="stat-sub">từ người ăn nhiều hơn chi</div>
