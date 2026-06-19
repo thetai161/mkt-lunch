@@ -1266,7 +1266,7 @@
         "2026-06-22": {
           "main": 6,
           "soup": 2,
-          "fruit": null,
+          "fruit": 10,
           "rice": 3,
           "washMain": 4,
           "washSub": null
