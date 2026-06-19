@@ -1265,7 +1265,7 @@
       "assignments": {
         "2026-06-22": {
           "main": 6,
-          "soup": null,
+          "soup": 2,
           "fruit": null,
           "rice": 3,
           "washMain": 4,
