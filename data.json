@@ -1282,7 +1282,7 @@
         "2026-06-24": {
           "main": null,
           "soup": 2,
-          "fruit": null,
+          "fruit": 10,
           "rice": 3,
           "washMain": 4,
           "washSub": null
