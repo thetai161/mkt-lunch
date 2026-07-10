@@ -1704,7 +1704,9 @@
       "contributors": [],
       "rolloverOverride": null,
       "treasurerId": null,
-      "settledIds": []
+      "settledIds": [
+        3
+      ]
     },
     "2026-07-13": {
       "days": {
