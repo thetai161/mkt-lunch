@@ -1777,7 +1777,7 @@
           "fruit": null,
           "rice": 1,
           "washMain": 7,
-          "washSub": 2
+          "washSub": null
         }
       },
       "qrImage": null,
