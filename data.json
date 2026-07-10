@@ -1607,7 +1607,7 @@
           "main": 120000,
           "soup": 100000,
           "fruit": 0,
-          "rice": 0,
+          "rice": 30000,
           "attendees": [
             1,
             2,
@@ -1643,7 +1643,7 @@
           "main": 0,
           "soup": 0,
           "fruit": 0,
-          "rice": 30000,
+          "rice": 0,
           "attendees": [
             1,
             2,
