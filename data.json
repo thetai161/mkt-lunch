@@ -1769,7 +1769,7 @@
           "fruit": 10,
           "rice": 3,
           "washMain": 7,
-          "washSub": 2
+          "washSub": null
         },
         "2026-07-17": {
           "main": 7,
