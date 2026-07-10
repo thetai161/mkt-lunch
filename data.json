@@ -1677,7 +1677,7 @@
         },
         "2026-07-07": {
           "main": 8,
-          "soup": 5,
+          "soup": null,
           "fruit": 10,
           "rice": 1,
           "washMain": 4,
