@@ -1857,7 +1857,7 @@
       "assignments": {
         "2026-07-21": {
           "main": null,
-          "soup": null,
+          "soup": 2,
           "fruit": null,
           "rice": null,
           "washMain": 4,
