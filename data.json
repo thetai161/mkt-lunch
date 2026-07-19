@@ -1883,7 +1883,7 @@
           "main": 8,
           "soup": 2,
           "fruit": 10,
-          "rice": null,
+          "rice": 1,
           "washMain": null,
           "washSub": 8
         },
