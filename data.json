@@ -2013,6 +2013,14 @@
           "rice": null,
           "washMain": null,
           "washSub": null
+        },
+        "2026-07-29": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": 2,
+          "washMain": null,
+          "washSub": null
         }
       },
       "qrImage": null,
