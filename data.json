@@ -2018,7 +2018,7 @@
           "main": null,
           "soup": null,
           "fruit": null,
-          "rice": null,
+          "rice": 3,
           "washMain": null,
           "washSub": null
         }
