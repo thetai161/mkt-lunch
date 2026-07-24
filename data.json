@@ -2009,7 +2009,7 @@
         "2026-07-27": {
           "main": 3,
           "soup": 2,
-          "fruit": null,
+          "fruit": 10,
           "rice": null,
           "washMain": null,
           "washSub": null
