@@ -2004,7 +2004,26 @@
       "settledIds": []
     },
     "2026-07-27": {
-      "days": {},
+      "days": {
+        "2026-07-27": {
+          "main": 0,
+          "soup": 30000,
+          "fruit": 112000,
+          "rice": 0,
+          "attendees": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        }
+      },
       "assignments": {
         "2026-07-27": {
           "main": 3,
@@ -2049,7 +2068,9 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": null
+      "rolloverOverride": null,
+      "treasurerId": null,
+      "settledIds": []
     }
   },
   "startWeekKey": "2026-04-27"
