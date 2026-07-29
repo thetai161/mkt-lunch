@@ -2180,6 +2180,22 @@
       "qrImage": null,
       "contributors": [],
       "rolloverOverride": null
+    },
+    "2026-08-10": {
+      "days": {},
+      "assignments": {
+        "2026-08-10": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": null,
+          "washMain": 4,
+          "washSub": null
+        }
+      },
+      "qrImage": null,
+      "contributors": [],
+      "rolloverOverride": null
     }
   },
   "startWeekKey": "2026-04-27"
