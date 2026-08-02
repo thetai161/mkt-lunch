@@ -2173,7 +2173,7 @@
           "fruit": null,
           "rice": 3,
           "washMain": 4,
-          "washSub": 8
+          "washSub": null
         },
         "2026-08-04": {
           "main": 8,
