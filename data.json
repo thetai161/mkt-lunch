@@ -2407,7 +2407,10 @@
       "treasurerId": null,
       "settledIds": [
         1,
-        4
+        4,
+        2,
+        10,
+        5
       ]
     }
   },
