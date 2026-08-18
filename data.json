@@ -2415,6 +2415,22 @@
         6,
         9
       ]
+    },
+    "2026-08-17": {
+      "days": {},
+      "assignments": {
+        "2026-08-19": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": 3,
+          "washMain": null,
+          "washSub": null
+        }
+      },
+      "qrImage": null,
+      "contributors": [],
+      "rolloverOverride": null
     }
   },
   "startWeekKey": "2026-04-27"
