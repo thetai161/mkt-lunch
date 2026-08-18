@@ -2423,7 +2423,7 @@
         "2026-08-19": {
           "main": null,
           "soup": null,
-          "fruit": null,
+          "fruit": 10,
           "rice": 3,
           "washMain": 4,
           "washSub": null
