@@ -2441,7 +2441,7 @@
           "soup": 3,
           "fruit": 10,
           "rice": 8,
-          "washMain": null,
+          "washMain": 9,
           "washSub": 8
         }
       },
