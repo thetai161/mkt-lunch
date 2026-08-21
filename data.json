@@ -2538,7 +2538,7 @@
           "soup": 2,
           "fruit": 10,
           "rice": null,
-          "washMain": null,
+          "washMain": 5,
           "washSub": null
         },
         "2026-08-27": {
