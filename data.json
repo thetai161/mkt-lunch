@@ -2525,7 +2525,7 @@
         },
         "2026-08-27": {
           "main": null,
-          "soup": null,
+          "soup": 2,
           "fruit": 10,
           "rice": null,
           "washMain": null,
