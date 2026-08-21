@@ -2418,7 +2418,44 @@
       ]
     },
     "2026-08-17": {
-      "days": {},
+      "days": {
+        "2026-08-19": {
+          "main": 0,
+          "soup": 0,
+          "fruit": 0,
+          "rice": 0,
+          "attendees": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "2026-08-20": {
+          "main": 0,
+          "soup": 0,
+          "fruit": 0,
+          "rice": 30000,
+          "attendees": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ]
+        }
+      },
       "assignments": {
         "2026-08-19": {
           "main": 1,
@@ -2447,7 +2484,9 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": null
+      "rolloverOverride": null,
+      "treasurerId": null,
+      "settledIds": []
     },
     "2026-08-24": {
       "days": {},
