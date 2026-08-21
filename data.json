@@ -2514,7 +2514,7 @@
         "2026-08-24": {
           "main": 6,
           "soup": 8,
-          "fruit": 5,
+          "fruit": null,
           "rice": 3,
           "washMain": 4,
           "washSub": 8
