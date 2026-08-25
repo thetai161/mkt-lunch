@@ -2505,7 +2505,8 @@
       "rolloverOverride": null,
       "treasurerId": null,
       "settledIds": [
-        6
+        6,
+        7
       ]
     },
     "2026-08-24": {
