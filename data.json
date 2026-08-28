@@ -2742,7 +2742,7 @@
         "2026-09-04": {
           "main": 5,
           "soup": null,
-          "fruit": null,
+          "fruit": 10,
           "rice": 9,
           "washMain": null,
           "washSub": null
