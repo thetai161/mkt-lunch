@@ -2737,7 +2737,7 @@
           "fruit": 10,
           "rice": 1,
           "washMain": 4,
-          "washSub": 7
+          "washSub": null
         },
         "2026-09-04": {
           "main": 5,
