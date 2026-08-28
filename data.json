@@ -2745,7 +2745,7 @@
           "fruit": 10,
           "rice": 9,
           "washMain": 8,
-          "washSub": 8
+          "washSub": null
         }
       },
       "qrImage": null,
