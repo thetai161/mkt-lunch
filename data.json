@@ -2672,7 +2672,10 @@
       "contributors": [],
       "rolloverOverride": null,
       "treasurerId": null,
-      "settledIds": []
+      "settledIds": [
+        4,
+        3
+      ]
     },
     "2026-08-31": {
       "days": {
