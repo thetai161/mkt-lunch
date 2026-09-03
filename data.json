@@ -2733,7 +2733,7 @@
         },
         "2026-09-03": {
           "main": 3,
-          "soup": 6,
+          "soup": null,
           "fruit": 10,
           "rice": 1,
           "washMain": 4,
