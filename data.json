@@ -2692,7 +2692,7 @@
       "assignments": {
         "2026-09-07": {
           "main": 3,
-          "soup": null,
+          "soup": 5,
           "fruit": null,
           "rice": null,
           "washMain": 4,
