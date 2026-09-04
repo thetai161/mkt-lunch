@@ -2734,7 +2734,7 @@
       "qrImage": null,
       "contributors": [],
       "rolloverOverride": null,
-      "treasurerId": null,
+      "treasurerId": 7,
       "settledIds": []
     }
   },
