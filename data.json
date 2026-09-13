@@ -2612,7 +2612,7 @@
         },
         "2026-09-15": {
           "main": 1,
-          "soup": 8,
+          "soup": null,
           "fruit": null,
           "rice": 8,
           "washMain": 4,
