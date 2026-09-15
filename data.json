@@ -2611,7 +2611,10 @@
       "contributors": [],
       "rolloverOverride": null,
       "treasurerId": 7,
-      "settledIds": []
+      "settledIds": [
+        3,
+        4
+      ]
     },
     "2026-09-14": {
       "days": {
