@@ -2993,7 +2993,7 @@
           "main": 2,
           "soup": 8,
           "fruit": null,
-          "rice": null,
+          "rice": 7,
           "washMain": null,
           "washSub": null
         }
