@@ -3272,7 +3272,7 @@
         },
         "2026-10-19": {
           "main": null,
-          "soup": null,
+          "soup": 2,
           "fruit": null,
           "rice": null,
           "washMain": null,
