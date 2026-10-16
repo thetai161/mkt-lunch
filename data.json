@@ -3219,6 +3219,22 @@
       "rolloverOverride": null,
       "treasurerId": null,
       "settledIds": []
+    },
+    "2026-10-19": {
+      "days": {},
+      "assignments": {
+        "2026-10-20": {
+          "main": 5,
+          "soup": null,
+          "fruit": null,
+          "rice": null,
+          "washMain": null,
+          "washSub": null
+        }
+      },
+      "qrImage": null,
+      "contributors": [],
+      "rolloverOverride": null
     }
   },
   "startWeekKey": "2026-04-27"
