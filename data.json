@@ -3247,7 +3247,7 @@
       "days": {},
       "assignments": {
         "2026-10-20": {
-          "main": null,
+          "main": 5,
           "soup": null,
           "fruit": null,
           "rice": 7,
