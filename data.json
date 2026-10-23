@@ -3369,7 +3369,7 @@
       "assignments": {
         "2026-10-26": {
           "main": 3,
-          "soup": null,
+          "soup": 1,
           "fruit": null,
           "rice": null,
           "washMain": 4,
