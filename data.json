@@ -3249,7 +3249,7 @@
           "main": 110000,
           "soup": 20000,
           "fruit": 150000,
-          "rice": 0,
+          "rice": 30000,
           "attendees": [
             1,
             2,
@@ -3402,7 +3402,9 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": null
+      "rolloverOverride": null,
+      "treasurerId": null,
+      "settledIds": []
     }
   },
   "startWeekKey": "2026-04-27"
