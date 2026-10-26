@@ -3277,7 +3277,7 @@
           "main": 200000,
           "soup": 100000,
           "fruit": 0,
-          "rice": 0,
+          "rice": 20000,
           "attendees": [
             1,
             2,
