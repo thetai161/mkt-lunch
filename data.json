@@ -3502,7 +3502,7 @@
         },
         "2026-11-04": {
           "main": null,
-          "soup": null,
+          "soup": 7,
           "fruit": null,
           "rice": null,
           "washMain": 5,
