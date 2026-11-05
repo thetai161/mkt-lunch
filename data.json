@@ -3517,7 +3517,7 @@
           "main": 0,
           "soup": 0,
           "fruit": 0,
-          "rice": 0,
+          "rice": 80000,
           "attendees": [
             1,
             2,
@@ -3532,7 +3532,7 @@
           "main": 0,
           "soup": 0,
           "fruit": 0,
-          "rice": 80000,
+          "rice": 0,
           "attendees": [
             1,
             2,
