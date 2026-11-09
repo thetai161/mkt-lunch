@@ -3648,7 +3648,7 @@
         },
         "2026-11-12": {
           "main": 8,
-          "soup": 1,
+          "soup": null,
           "fruit": null,
           "rice": 2,
           "washMain": 5,
