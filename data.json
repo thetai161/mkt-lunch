@@ -3589,7 +3589,23 @@
       "settledIds": []
     },
     "2026-11-09": {
-      "days": {},
+      "days": {
+        "2026-11-09": {
+          "main": 190000,
+          "soup": 0,
+          "fruit": 0,
+          "rice": 0,
+          "attendees": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8
+          ]
+        }
+      },
       "assignments": {
         "2026-11-09": {
           "main": 3,
@@ -3626,7 +3642,9 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": null
+      "rolloverOverride": null,
+      "treasurerId": null,
+      "settledIds": []
     }
   },
   "startWeekKey": "2026-04-27"
