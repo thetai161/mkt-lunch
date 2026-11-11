@@ -3479,7 +3479,14 @@
       "contributors": [],
       "rolloverOverride": null,
       "treasurerId": null,
-      "settledIds": []
+      "settledIds": [
+        1,
+        3,
+        4,
+        5,
+        7,
+        8
+      ]
     },
     "2026-11-02": {
       "days": {
