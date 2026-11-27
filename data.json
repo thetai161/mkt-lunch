@@ -3898,7 +3898,7 @@
         },
         "2026-11-25": {
           "main": 200000,
-          "soup": 0,
+          "soup": 30000,
           "fruit": 0,
           "rice": 0,
           "attendees": [
@@ -3916,6 +3916,21 @@
           "soup": 0,
           "fruit": 0,
           "rice": 20000,
+          "attendees": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8
+          ]
+        },
+        "2026-11-27": {
+          "main": 0,
+          "soup": 0,
+          "fruit": 0,
+          "rice": 0,
           "attendees": [
             1,
             2,
@@ -3966,7 +3981,23 @@
       "settledIds": []
     },
     "2026-11-30": {
-      "days": {},
+      "days": {
+        "2026-11-30": {
+          "main": 0,
+          "soup": 0,
+          "fruit": 0,
+          "rice": 0,
+          "attendees": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8
+          ]
+        }
+      },
       "assignments": {
         "2026-11-30": {
           "main": 3,
@@ -4011,7 +4042,41 @@
       },
       "qrImage": null,
       "contributors": [],
-      "rolloverOverride": null
+      "rolloverOverride": null,
+      "treasurerId": null,
+      "settledIds": []
+    },
+    "2026-12-07": {
+      "days": {
+        "2026-12-07": {
+          "main": 0,
+          "soup": 0,
+          "fruit": 0,
+          "rice": 0,
+          "attendees": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8
+          ]
+        }
+      },
+      "assignments": {
+        "2026-12-07": {
+          "main": null,
+          "soup": null,
+          "fruit": null,
+          "rice": null,
+          "washMain": null,
+          "washSub": null
+        }
+      },
+      "qrImage": null,
+      "treasurerId": null,
+      "settledIds": []
     }
   },
   "startWeekKey": "2026-04-27"
